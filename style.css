@@ -445,8 +445,6 @@ input[type="text"]:focus, textarea:focus {
 .reveal-hook { background: rgba(255,43,214,0.06); border-color: rgba(255,43,214,0.3); }
 .reveal-hook h4 { color: var(--magenta); }
 
-.close-x { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--ink-soft); font-size: 1.1rem; cursor: pointer; }
-
 .hud-back-btn {
   font-family: 'Kanit', sans-serif;
   font-size: 0.78rem;
@@ -463,20 +461,6 @@ input[type="text"]:focus, textarea:focus {
 .hud-back-btn:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; transform: none; }
 
 /* Knowledge Library (intro screen + persistent modal) */
-.hud-library-btn {
-  font-family: 'Kanit', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--ink);
-  background: rgba(0, 240, 255, 0.1);
-  border: 1px solid rgba(0, 240, 255, 0.4);
-  border-radius: 999px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
-}
-.hud-library-btn:hover { box-shadow: 0 0 16px rgba(0, 240, 255, 0.4); transform: translateY(-1px); }
-
 .hud-reset-btn {
   font-family: 'Kanit', sans-serif;
   font-size: 0.78rem;
@@ -491,16 +475,40 @@ input[type="text"]:focus, textarea:focus {
 }
 .hud-reset-btn:hover { box-shadow: 0 0 16px rgba(255, 77, 109, 0.4); transform: translateY(-1px); }
 
-.library-layout {
+/* Persistent two-column game layout: คลังความรู้ (ซ้าย, ทุกหน้า) + ด่านเกม (ขวา) */
+.game-layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 18px;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
   align-items: start;
-  margin-top: 10px;
 }
-@media (max-width: 800px) { .library-layout { grid-template-columns: 1fr; } }
+.game-main { min-width: 0; }
+.game-main .screen { margin: 0; max-width: none; }
 
-.library-nav { display: flex; flex-direction: column; gap: 8px; }
+.library-sidebar {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 20px;
+  padding: 18px 18px 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.06), inset 0 0 40px rgba(0, 240, 255, 0.02);
+  position: sticky;
+  top: 14px;
+  max-height: calc(100vh - 28px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.library-sidebar-head h3 { margin: 0 0 6px; font-size: 1rem; color: var(--ink); }
+.library-sidebar-hint { margin: 0 0 12px; font-size: 0.76rem; line-height: 1.6; color: var(--ink-soft); }
+
+@media (max-width: 900px) {
+  .game-layout { grid-template-columns: 1fr; }
+  .library-sidebar { position: static; max-height: none; }
+  .library-sidebar .library-content { max-height: 320px; }
+}
+
+.library-nav { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
 .library-nav-btn {
   display: flex;
   align-items: center;
@@ -530,8 +538,10 @@ input[type="text"]:focus, textarea:focus {
   background: rgba(6, 10, 20, 0.5);
   border: 1px solid var(--panel-border);
   border-radius: 18px;
-  padding: 20px 22px;
-  max-height: 55vh;
+  padding: 16px 18px;
+  margin-top: 12px;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
 }
 .library-cat-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
@@ -542,39 +552,16 @@ input[type="text"]:focus, textarea:focus {
 .library-section h5 { margin: 0 0 4px; font-size: 0.87rem; color: var(--cyan); }
 .library-section p { margin: 0; font-size: 0.85rem; line-height: 1.7; color: var(--ink); }
 
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(2, 4, 10, 0.72);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  z-index: 500;
-}
-.modal-backdrop[hidden] { display: none; }
-.modal-panel {
-  position: relative;
-  width: 100%;
-  max-width: 960px;
-  max-height: 88vh;
-  overflow-y: auto;
-  background: var(--panel);
-  border: 1px solid var(--panel-border);
-  border-radius: 22px;
-  padding: 28px 26px;
-  backdrop-filter: blur(18px);
-}
-.modal-panel h3 { margin: 0 0 12px; font-size: 1.1rem; color: var(--ink); }
 .library-bonus-note {
-  margin: 0 0 14px;
-  font-size: 0.82rem;
+  margin: 0 0 12px;
+  font-size: 0.78rem;
+  line-height: 1.5;
   color: var(--yellow);
   background: rgba(255,217,61,0.1);
   border: 1px solid rgba(255,217,61,0.35);
   border-radius: 12px;
   padding: 8px 12px;
+  flex-shrink: 0;
 }
 
 /* Score / badges / certificate */

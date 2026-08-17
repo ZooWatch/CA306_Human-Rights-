@@ -32,7 +32,6 @@
       <span id="hudInsight">0</span><small>InsightPoints</small>
     </div>
     <button class="hud-back-btn" id="btnBackHud" title="ย้อนกลับไปหน้าก่อนหน้า">← ย้อนกลับ</button>
-    <button class="hud-library-btn" id="btnOpenLibrary">📚 คลังความรู้</button>
     <button class="hud-reset-btn" id="btnResetHud" title="เริ่มกิจกรรมใหม่ทั้งหมด">↺ เริ่มใหม่</button>
   </div>
 </header>
@@ -73,19 +72,20 @@
     <button class="btn-primary" id="btnStart">เริ่มกะทำงาน →</button>
   </section>
 
-  <!-- ============ SCREEN: KNOWLEDGE LIBRARY (mandatory intro) ============ -->
-  <section class="panel screen screen-wide" id="screen-library" hidden>
-    <div class="stage-head">
-      <span class="tag">ก่อนเริ่มภารกิจ · คลังความรู้</span>
-      <h2>คลังความรู้: สิทธิมนุษยชนและสิทธิเสรีภาพ</h2>
-      <p class="lead">อ่านหลักการพื้นฐานเหล่านี้ก่อนเริ่มภารกิจ — เลือกหมวดหมู่ทางด้านซ้าย แล้วเลื่อนอ่านเนื้อหาทางด้านขวา คุณสามารถกลับมาเปิดคลังความรู้นี้ได้ตลอดระหว่างเล่นเกมผ่านปุ่ม "📚 คลังความรู้" ที่มุมบนขวา และการเข้ามาตรวจสอบก่อนตอบคำถามยังได้ InsightPoints เพิ่มด้วย</p>
-    </div>
-    <div class="library-layout">
-      <nav class="library-nav" id="libraryNavIntro"></nav>
-      <div class="library-content" id="libraryContentIntro"></div>
-    </div>
-    <button class="btn-primary" id="btnLibraryContinue">เข้าใจแล้ว เริ่มภารกิจ →</button>
-  </section>
+  <!-- ============ PERSISTENT GAME LAYOUT: คลังความรู้ (ซ้าย, ทุกหน้า) + ด่านเกม (ขวา) ============ -->
+  <div class="game-layout" id="gameLayout" hidden>
+
+    <aside class="library-sidebar">
+      <div class="library-sidebar-head">
+        <h3>📚 คลังความรู้</h3>
+        <p class="library-sidebar-hint">เลือกหมวดหมู่ด้านล่างเพื่ออ่านหลักการที่เกี่ยวข้องก่อนตอบคำถามทางขวา — เปิดดูได้ตลอดทุกด่าน</p>
+      </div>
+      <p class="library-bonus-note" id="libraryBonusNote" hidden>✨ ได้ 12 InsightPoints จากการตรวจสอบคลังความรู้ในด่านนี้แล้ว</p>
+      <nav class="library-nav" id="librarySidebarNav"></nav>
+      <div class="library-content" id="librarySidebarContent"></div>
+    </aside>
+
+    <div class="game-main">
 
   <!-- ============ SCREEN: STAGE 0 — FOUNDATION ============ -->
   <section class="panel screen" id="screen-stage0" hidden>
@@ -109,7 +109,7 @@
     </div>
 
     <div class="three-part-test" id="threePartTest" hidden>
-      <h3>🔺 แบบทดสอบสามชั้น (Three-Part Test) — ICCPR ข้อ 19</h3>
+      <h3>🔺 แบบทดสอบสามชั้น (Three-Part Test) — UDHR ข้อ 19</h3>
       <div class="test-steps">
         <div class="test-step"><strong>1. Provided by Law</strong><span>กำหนดไว้โดยกฎหมายที่ชัดเจน</span></div>
         <div class="test-step"><strong>2. Legitimate Aim</strong><span>มีวัตถุประสงค์ที่ชอบธรรม</span></div>
@@ -268,20 +268,10 @@
     <button class="btn-secondary" id="btnResetAll">↺ เริ่มกิจกรรมใหม่ทั้งหมด</button>
   </section>
 
-</main>
+    </div><!-- /.game-main -->
+  </div><!-- /.game-layout -->
 
-<!-- Knowledge Library modal — reachable anytime via the HUD "📚 คลังความรู้" button -->
-<div class="modal-backdrop" id="libraryModal" hidden>
-  <div class="modal-panel">
-    <button class="close-x" id="btnCloseLibrary">✕</button>
-    <h3>📚 คลังความรู้</h3>
-    <p class="library-bonus-note" id="libraryBonusNote" hidden>✨ ได้ 12 InsightPoints จากการค้นคว้าก่อนตอบในด่านนี้!</p>
-    <div class="library-layout">
-      <nav class="library-nav" id="libraryNavModal"></nav>
-      <div class="library-content" id="libraryContentModal"></div>
-    </div>
-  </div>
-</div>
+</main>
 
 <!-- Hidden form for Google Apps Script submission (avoids CORS) -->
 <form id="gsForm" action="" method="POST" target="gsFrame" style="display:none;">

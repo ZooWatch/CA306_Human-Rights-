@@ -19,26 +19,39 @@ const TRACKS = [
 const KNOWLEDGE_BASE = {
   udhr: {
     icon: "🌍",
-    label: "ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน (UDHR)",
-    intro: "ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน (Universal Declaration of Human Rights) ปี ค.ศ. 1948 คือรากฐานของสิทธิมนุษยชนสมัยใหม่ทั่วโลก แม้จะไม่มีสภาพบังคับทางกฎหมายโดยตรงเท่าสนธิสัญญา แต่ประเทศต่าง ๆ รวมถึงไทยยึดเป็นหลักการอ้างอิงในการร่างรัฐธรรมนูญและกฎหมายภายใน",
+    label: "ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน (UDHR) — ครบ 30 ข้อ",
+    intro: "ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน (Universal Declaration of Human Rights) ปี ค.ศ. 1948 มีทั้งหมด 30 ข้อ คือรากฐานของสิทธิมนุษยชนสมัยใหม่ทั่วโลก แม้จะไม่มีสภาพบังคับทางกฎหมายโดยตรงเท่าสนธิสัญญา แต่ประเทศต่าง ๆ รวมถึงไทยยึดเป็นหลักการอ้างอิงในการร่างรัฐธรรมนูญและกฎหมายภายใน โดยเฉพาะข้อ 19 ว่าด้วยเสรีภาพในการแสดงออกซึ่งวางเงื่อนไขการจำกัดเสรีภาพไว้อย่างเข้มงวด เรียกว่า \"แบบทดสอบสามชั้น\" (Three-Part Test): (1) กำหนดไว้โดยกฎหมายที่ชัดเจน (2) มีวัตถุประสงค์ชอบธรรม และ (3) จำเป็นและได้สัดส่วน — หลักการนี้คือที่มาของ \"มาตรวัดเสรีภาพ-ความรับผิดชอบ\" ที่ใช้ตลอดภารกิจนี้",
     sections: [
       { h: "ข้อ 1 — ศักดิ์ศรีและความเสมอภาค", p: "มนุษย์ทุกคนเกิดมาอย่างเสรีและเท่าเทียมกันในศักดิ์ศรีและสิทธิ นี่คือหลักการรากฐานที่สุดที่สิทธิอื่นทั้งหมดต่อยอดขึ้นมา ตรงกับมาตรา 4 ของรัฐธรรมนูญไทยที่วางศักดิ์ศรีความเป็นมนุษย์ไว้เป็นหลักการนำ" },
+      { h: "ข้อ 2 — สิทธิโดยไม่เลือกปฏิบัติ", p: "ทุกคนมีสิทธิและเสรีภาพตามปฏิญญานี้โดยไม่ถูกแบ่งแยกด้วยเหตุเชื้อชาติ สีผิว เพศ ภาษา ศาสนา ความเห็นทางการเมือง เผ่าพันธุ์ หรือสถานะอื่นใด ตรงกับมาตรา 27 ของรัฐธรรมนูญไทยเรื่องความเสมอภาค" },
+      { h: "ข้อ 3 — สิทธิในชีวิตและเสรีภาพ", p: "ทุกคนมีสิทธิในการมีชีวิต เสรีภาพ และความมั่นคงแห่งร่างกาย เป็นฐานของสิทธิเสรีภาพทุกประเภทที่ตามมา" },
+      { h: "ข้อ 4 — ห้ามความเป็นทาส", p: "ห้ามบุคคลใดถูกกักขังเป็นทาสหรือแรงงานที่ถูกบังคับในทุกรูปแบบ" },
+      { h: "ข้อ 5 — ห้ามการทรมาน", p: "ห้ามการทรมานหรือการปฏิบัติ/การลงโทษที่โหดร้าย ไร้มนุษยธรรม หรือย่ำยีศักดิ์ศรี" },
+      { h: "ข้อ 6 — สิทธิที่จะได้รับการยอมรับตามกฎหมาย", p: "ทุกคนมีสิทธิที่จะได้รับการยอมรับว่าเป็นบุคคลตามกฎหมายไม่ว่าอยู่ที่ใด" },
+      { h: "ข้อ 7 — ความเสมอภาคทางกฎหมาย", p: "ทุกคนเสมอกันตามกฎหมายและมีสิทธิได้รับความคุ้มครองทางกฎหมายอย่างเท่าเทียมโดยไม่ถูกเลือกปฏิบัติ" },
       { h: "ข้อ 8 — สิทธิที่จะได้รับการเยียวยา", p: "ทุกคนมีสิทธิที่จะได้รับการเยียวยาอย่างมีประสิทธิภาพจากศาลเมื่อสิทธิขั้นพื้นฐานถูกละเมิด สอดคล้องกับมาตรา 25 ของรัฐธรรมนูญไทยที่ให้ผู้ถูกละเมิดสิทธิใช้สิทธิทางศาลได้โดยตรง" },
+      { h: "ข้อ 9 — ห้ามจับกุมหรือเนรเทศตามอำเภอใจ", p: "ห้ามบุคคลใดถูกจับกุม กักขัง หรือเนรเทศตามอำเภอใจโดยปราศจากกระบวนการที่ชอบด้วยกฎหมาย" },
+      { h: "ข้อ 10 — สิทธิในการพิจารณาคดีที่เป็นธรรม", p: "ทุกคนมีสิทธิได้รับการพิจารณาคดีอย่างเป็นธรรมและเปิดเผยโดยศาลที่เป็นอิสระและเป็นกลาง" },
+      { h: "ข้อ 11 — สันนิษฐานไว้ก่อนว่าบริสุทธิ์", p: "ผู้ถูกกล่าวหาว่ากระทำผิดอาญาต้องได้รับการสันนิษฐานไว้ก่อนว่าบริสุทธิ์จนกว่าจะพิสูจน์ได้ว่ามีความผิดตามกฎหมาย ตรงกับมาตรา 28-29 ของรัฐธรรมนูญไทย — สำคัญมากกับงานข่าวอาชญากรรมและสารคดีที่เกี่ยวข้องกับคดีความ" },
       { h: "ข้อ 12 — ความเป็นส่วนตัว", p: "บุคคลจะถูกแทรกแซงความเป็นส่วนตัว ครอบครัว ที่อยู่อาศัย หรือการติดต่อสื่อสารตามอำเภอใจไม่ได้ และมีสิทธิได้รับการคุ้มครองจากการแทรกแซงเช่นนั้น ตรงกับมาตรา 32 และ 36 ของรัฐธรรมนูญไทย" },
-      { h: "ข้อ 18-19 — เสรีภาพทางความคิดและการแสดงออก", p: "ทุกคนมีสิทธิในเสรีภาพทางความคิด มโนธรรม และศาสนา รวมถึงสิทธิที่จะแสวงหา รับ และเผยแพร่ข่าวสารและความคิดเห็นผ่านสื่อใด ๆ โดยไม่จำกัดพรมแดน ข้อ 19 นี้คือหัวใจของเสรีภาพสื่อมวลชนสากล ตรงกับมาตรา 31 และมาตรา 34 ของรัฐธรรมนูญไทย" },
-      { h: "ข้อ 23 — สิทธิในการทำงาน", p: "ทุกคนมีสิทธิในการทำงานและเลือกอาชีพได้อย่างเสรี รับรองสถานะของอาชีพใหม่ ๆ เช่น อินฟลูเอนเซอร์และสตรีมเมอร์ในฐานะผู้ประกอบอาชีพอิสระ ตรงกับมาตรา 40 ของรัฐธรรมนูญไทย" },
-      { h: "ข้อ 27 — สิทธิของผู้สร้างสรรค์ผลงาน", p: "ทุกคนมีสิทธิได้รับความคุ้มครองผลประโยชน์ทางศีลธรรมและทางวัตถุจากผลงานสร้างสรรค์ทางวิทยาศาสตร์ วรรณกรรม หรือศิลปะของตน เป็นฐานคิดของกฎหมายลิขสิทธิ์ ตรงกับมาตรา 37 ของรัฐธรรมนูญไทยเรื่องสิทธิในทรัพย์สิน" },
-    ],
-  },
-  iccpr: {
-    icon: "📜",
-    label: "กติการะหว่างประเทศ ICCPR และการจำกัดสิทธิ",
-    intro: "กติการะหว่างประเทศว่าด้วยสิทธิพลเมืองและสิทธิทางการเมือง (ICCPR) เป็นสนธิสัญญาที่ไทยเข้าเป็นภาคีและมีผลผูกพันทางกฎหมายจริง (ต่างจาก UDHR ที่เป็นเพียงปฏิญญา) จึงมีรายละเอียดเรื่อง \"เงื่อนไขการจำกัดสิทธิ\" ที่ชัดเจนกว่า ซึ่งเป็นเครื่องมือสำคัญที่สุดในการวิเคราะห์สถานการณ์ตลอดทั้งภารกิจนี้",
-    sections: [
-      { h: "ข้อ 14 — สิทธิในกระบวนการยุติธรรมที่เป็นธรรม", p: "รวมถึงหลักการสันนิษฐานไว้ก่อนว่าบริสุทธิ์จนกว่าจะพิสูจน์ได้ว่ามีความผิดตามกฎหมาย ตรงกับมาตรา 28-29 ของรัฐธรรมนูญไทย — สำคัญมากกับงานข่าวอาชญากรรมและสารคดีที่เกี่ยวข้องกับคดีความ" },
-      { h: "ข้อ 17 — ความเป็นส่วนตัว", p: "คุ้มครองไม่ให้บุคคลถูกแทรกแซงความเป็นส่วนตัว ครอบครัว หรือถูกโจมตีเกียรติยศและชื่อเสียงโดยไม่ชอบด้วยกฎหมาย ตรงกับมาตรา 32 ของรัฐธรรมนูญไทย" },
-      { h: "ข้อ 19 — เสรีภาพในการแสดงออก", p: "รับรองสิทธิที่จะมีความคิดเห็นโดยปราศจากการแทรกแซง และสิทธิในเสรีภาพการแสดงออกซึ่งรวมถึงเสรีภาพที่จะแสวงหา รับ และเผยแพร่ข่าวสารทุกประเภท แต่ก็เป็นข้อเดียวใน ICCPR ที่วางเงื่อนไขการจำกัดไว้อย่างละเอียดที่สุด" },
-      { h: "แบบทดสอบสามชั้น (Three-Part Test) ของข้อ 19 วรรค 3", p: "การจำกัดเสรีภาพในการแสดงออกจะชอบธรรมได้ต้องผ่านทั้ง 3 เงื่อนไขพร้อมกัน: (1) Provided by Law — กำหนดไว้โดยกฎหมายที่ชัดเจนเข้าถึงได้ (2) Legitimate Aim — มีวัตถุประสงค์ชอบธรรม เช่น ความมั่นคง ความสงบเรียบร้อย หรือสิทธิของผู้อื่น (3) Necessary & Proportionate — จำเป็นและได้สัดส่วนกับเป้าหมายนั้นจริง ๆ ไม่มากเกินไป นี่คือเครื่องมือหลักที่ใช้ประเมินสถานการณ์ตลอดเกมนี้" },
+      { h: "ข้อ 13 — เสรีภาพในการเดินทาง", p: "ทุกคนมีสิทธิในเสรีภาพการเดินทางและการเลือกถิ่นที่อยู่ภายในรัฐของตน รวมถึงสิทธิที่จะออกจากประเทศใด ๆ และกลับเข้าประเทศของตน" },
+      { h: "ข้อ 14 — สิทธิในการลี้ภัย", p: "ทุกคนมีสิทธิที่จะแสวงหาและได้ลี้ภัยจากการประหัตประหารในประเทศอื่น" },
+      { h: "ข้อ 15 — สิทธิในสัญชาติ", p: "ทุกคนมีสิทธิในสัญชาติ และจะไม่ถูกเพิกถอนสัญชาติตามอำเภอใจ" },
+      { h: "ข้อ 16 — สิทธิในการสมรสและครอบครัว", p: "ชายและหญิงที่บรรลุนิติภาวะมีสิทธิสมรสและก่อตั้งครอบครัวโดยความยินยอมอย่างเสรีและเต็มใจของทั้งสองฝ่าย และมีสิทธิเท่าเทียมกันในเรื่องการสมรส" },
+      { h: "ข้อ 17 — สิทธิในทรัพย์สิน", p: "ทุกคนมีสิทธิเป็นเจ้าของทรัพย์สินโดยลำพังหรือร่วมกับผู้อื่น และจะไม่ถูกยึดทรัพย์สินตามอำเภอใจ ตรงกับมาตรา 37 ของรัฐธรรมนูญไทย" },
+      { h: "ข้อ 18 — เสรีภาพทางความคิด มโนธรรม และศาสนา", p: "ทุกคนมีสิทธิในเสรีภาพทางความคิด มโนธรรม และศาสนา รวมถึงเสรีภาพที่จะเปลี่ยนศาสนาและแสดงออกทางศาสนาของตน ตรงกับมาตรา 31 ของรัฐธรรมนูญไทย" },
+      { h: "ข้อ 19 — เสรีภาพในการแสดงออก", p: "ทุกคนมีสิทธิในเสรีภาพแห่งความเห็นและการแสดงออก รวมถึงสิทธิที่จะแสวงหา รับ และเผยแพร่ข่าวสารและความคิดเห็นผ่านสื่อใด ๆ โดยไม่จำกัดพรมแดน ข้อนี้คือหัวใจของเสรีภาพสื่อมวลชนสากล ตรงกับมาตรา 34 และมาตรา 35 ของรัฐธรรมนูญไทย และเป็นข้อที่วางเงื่อนไข \"แบบทดสอบสามชั้น\" (ดูคำอธิบายด้านบน) สำหรับการจำกัดเสรีภาพนี้อย่างชอบธรรม" },
+      { h: "ข้อ 20 — เสรีภาพในการชุมนุมและรวมกลุ่ม", p: "ทุกคนมีสิทธิในเสรีภาพการชุมนุมและการรวมกลุ่มโดยสงบ และจะไม่ถูกบังคับให้เป็นสมาชิกของสมาคมใด" },
+      { h: "ข้อ 21 — สิทธิทางการเมือง", p: "ทุกคนมีสิทธิเข้าร่วมในการปกครองประเทศตนโดยตรงหรือผ่านผู้แทนที่เลือกอย่างเสรี เจตจำนงของประชาชนคือฐานอำนาจของรัฐบาล" },
+      { h: "ข้อ 22 — สิทธิในหลักประกันทางสังคม", p: "ทุกคนมีสิทธิในหลักประกันทางสังคม และสิทธิที่จะได้รับการเติมเต็มทางเศรษฐกิจ สังคม และวัฒนธรรมที่จำเป็นต่อศักดิ์ศรีของตน" },
+      { h: "ข้อ 23 — สิทธิในการทำงาน", p: "ทุกคนมีสิทธิในการทำงาน เลือกอาชีพได้อย่างเสรี ได้รับค่าจ้างที่เป็นธรรม และมีสิทธิรวมตัวจัดตั้งสหภาพแรงงาน รับรองสถานะของอาชีพใหม่ ๆ เช่น อินฟลูเอนเซอร์และสตรีมเมอร์ในฐานะผู้ประกอบอาชีพอิสระ ตรงกับมาตรา 40 ของรัฐธรรมนูญไทย" },
+      { h: "ข้อ 24 — สิทธิในการพักผ่อน", p: "ทุกคนมีสิทธิในการพักผ่อนและมีเวลาว่าง รวมถึงการจำกัดเวลาทำงานที่สมเหตุสมผลและวันหยุดพักผ่อนโดยได้รับค่าจ้าง" },
+      { h: "ข้อ 25 — สิทธิในมาตรฐานความเป็นอยู่ที่เพียงพอ", p: "ทุกคนมีสิทธิในมาตรฐานความเป็นอยู่ที่เพียงพอต่อสุขภาพและความเป็นอยู่ที่ดีของตนและครอบครัว รวมถึงอาหาร เครื่องนุ่งห่ม ที่อยู่อาศัย และการดูแลทางการแพทย์" },
+      { h: "ข้อ 26 — สิทธิในการศึกษา", p: "ทุกคนมีสิทธิในการศึกษา การศึกษาต้องมุ่งพัฒนาบุคลิกภาพมนุษย์อย่างเต็มที่และเสริมสร้างการเคารพสิทธิมนุษยชนและเสรีภาพขั้นพื้นฐาน" },
+      { h: "ข้อ 27 — สิทธิของผู้สร้างสรรค์ผลงาน", p: "ทุกคนมีสิทธิเข้าร่วมชีวิตทางวัฒนธรรมของชุมชนอย่างเสรี และมีสิทธิได้รับความคุ้มครองผลประโยชน์ทางศีลธรรมและทางวัตถุจากผลงานสร้างสรรค์ทางวิทยาศาสตร์ วรรณกรรม หรือศิลปะของตน เป็นฐานคิดของกฎหมายลิขสิทธิ์ ตรงกับมาตรา 37 ของรัฐธรรมนูญไทยเรื่องสิทธิในทรัพย์สิน" },
+      { h: "ข้อ 28 — สิทธิในระเบียบสังคมที่เอื้อต่อสิทธิมนุษยชน", p: "ทุกคนมีสิทธิในระเบียบทางสังคมและระหว่างประเทศซึ่งสิทธิและเสรีภาพตามปฏิญญานี้จะเกิดผลได้อย่างเต็มที่" },
+      { h: "ข้อ 29 — หน้าที่ต่อชุมชนและขอบเขตของสิทธิ", p: "ทุกคนมีหน้าที่ต่อชุมชนที่ตนอาศัยอยู่ ในการใช้สิทธิและเสรีภาพของตน บุคคลย่อมอยู่ภายใต้ข้อจำกัดที่กฎหมายกำหนดเพื่อการเคารพสิทธิและเสรีภาพของผู้อื่น และเพื่อสนองความจำเป็นด้านศีลธรรม ความสงบเรียบร้อย และสวัสดิการทั่วไปในสังคมประชาธิปไตย — ข้อนี้คือหลักการที่ว่าไม่มีเสรีภาพใดไม่มีขอบเขต" },
+      { h: "ข้อ 30 — ห้ามการตีความเพื่อทำลายสิทธิ", p: "ห้ามตีความข้อใดในปฏิญญานี้ว่าให้สิทธิแก่รัฐ กลุ่มบุคคล หรือบุคคลใดในการกระทำที่มุ่งทำลายสิทธิและเสรีภาพที่บัญญัติไว้ในปฏิญญานี้" },
     ],
   },
   constitution: {
@@ -405,7 +418,7 @@ let state = {
   studentId: "", firstName: "", lastName: "", consent: false,
   track: null,
   rightsPoints: 0, insightPoints: 0,
-  library: { visitedIntro: {}, bonusGiven: { stage1: false, stage2: false, stage3: false } },
+  library: { bonusGiven: { stage1: false, stage2: false, stage3: false } },
   stage0: { index: 0, step: "article", articleChoice: null, done: false, allCorrectFirstTry: true, log: [] },
   stage1: { index: 0, answers: [], score: 0 },
   stage2: { index: 0, answers: [] },
@@ -428,7 +441,7 @@ function saveState() {
    ========================================================= */
 
 const $ = (id) => document.getElementById(id);
-const screens = ["start", "library", "stage0", "stage1", "stage2", "stage3", "stage4"];
+const screens = ["start", "stage0", "stage1", "stage2", "stage3", "stage4"];
 
 // ย้อนกลับ: สแต็กของหน้าจอที่ผ่านมา เก็บไว้เฉพาะในหน่วยความจำ (ไม่บันทึกลง localStorage)
 // เพื่อให้ปุ่ม "← ย้อนกลับ" พาไปยังหน้าก่อนหน้าตามลำดับที่ผู้เล่นเดินทางมาจริง
@@ -446,19 +459,20 @@ function showScreen(name, opts) {
   }
   state.screen = name;
   screens.forEach((s) => { $("screen-" + s).hidden = s !== name; });
-  $("hud").hidden = name === "start" || name === "library";
+  $("hud").hidden = name === "start";
+  $("gameLayout").hidden = name === "start";
   if (name.startsWith("stage")) {
     $("hudStage").textContent = name.replace("stage", "");
   }
   updateHud();
   updateBackButton();
+  updateLibraryBonusNote();
   window.scrollTo({ top: 0, behavior: "smooth" });
   saveState();
 }
 
 // เรียกฟังก์ชัน render ที่ตรงกับหน้าจอนั้น ๆ ใหม่ (ใช้ทั้งตอนย้อนกลับและตอน resume หลังรีเฟรช)
 function renderScreenEntry(name) {
-  if (name === "library") { renderLibraryIntro(); return; }
   if (name === "stage0") { renderFoundation(state.stage0.index || 0); return; }
   if (name === "stage1") { renderQuiz(state.stage1.index || 0); return; }
   if (name === "stage2") { renderScenario(state.stage2.index || 0); return; }
@@ -521,16 +535,18 @@ $("btnStart").addEventListener("click", () => {
   $("infoError").hidden = true;
   state.studentId = sid; state.firstName = fn; state.lastName = ln;
   state.consent = $("consentCheck").checked;
-  showScreen("library");
-  renderLibraryIntro();
+  initLibrarySidebar();
+  showScreen("stage0");
+  renderFoundation(0);
 });
 
 /* =========================================================
-   3.5 KNOWLEDGE LIBRARY — reference content shown before gameplay,
-   and reachable anytime via the "📚 คลังความรู้" button in the HUD
+   3.5 KNOWLEDGE LIBRARY — reference content docked as a persistent
+   left-hand column visible on every gameplay page (Stage 0-4), with
+   the actual stage/game content shown on the right-hand side
    ========================================================= */
 
-const KNOWLEDGE_CATEGORY_ORDER = ["udhr", "iccpr", "constitution", "media-df", "media-imc", "media-bc"];
+const KNOWLEDGE_CATEGORY_ORDER = ["udhr", "constitution", "media-df", "media-imc", "media-bc"];
 
 function defaultLibraryCategory() {
   if (state.track === "df") return "media-df";
@@ -539,8 +555,8 @@ function defaultLibraryCategory() {
   return "udhr";
 }
 
-function buildLibraryNav(navId, contentId) {
-  const nav = $(navId);
+function buildLibrarySidebarNav() {
+  const nav = $("librarySidebarNav");
   nav.innerHTML = "";
   KNOWLEDGE_CATEGORY_ORDER.forEach((key) => {
     const cat = KNOWLEDGE_BASE[key];
@@ -548,14 +564,17 @@ function buildLibraryNav(navId, contentId) {
     b.className = "library-nav-btn";
     b.dataset.key = key;
     b.innerHTML = `<span class="library-nav-icon">${cat.icon}</span><span>${cat.label}</span>`;
-    b.addEventListener("click", () => renderKnowledgeCategory(navId, contentId, key));
+    b.addEventListener("click", () => {
+      renderKnowledgeCategory(key);
+      awardLibraryBonus();
+    });
     nav.appendChild(b);
   });
 }
 
-function renderKnowledgeCategory(navId, contentId, key) {
-  const nav = $(navId);
-  const content = $(contentId);
+function renderKnowledgeCategory(key) {
+  const nav = $("librarySidebarNav");
+  const content = $("librarySidebarContent");
   [...nav.children].forEach((b) => b.classList.toggle("active", b.dataset.key === key));
   const cat = KNOWLEDGE_BASE[key];
   content.innerHTML =
@@ -563,50 +582,41 @@ function renderKnowledgeCategory(navId, contentId, key) {
     `<p class="library-intro-text">${cat.intro}</p>` +
     cat.sections.map((s) => `<div class="library-section"><h5>${s.h}</h5><p>${s.p}</p></div>`).join("");
   content.scrollTop = 0;
-  if (navId === "libraryNavIntro") state.library.visitedIntro[key] = true;
 }
 
-function renderLibraryIntro() {
-  buildLibraryNav("libraryNavIntro", "libraryContentIntro");
-  renderKnowledgeCategory("libraryNavIntro", "libraryContentIntro", defaultLibraryCategory());
+function initLibrarySidebar() {
+  buildLibrarySidebarNav();
+  renderKnowledgeCategory(defaultLibraryCategory());
+  updateLibraryBonusNote();
 }
 
-$("btnLibraryContinue").addEventListener("click", () => {
-  showScreen("stage0");
-  renderFoundation(0);
-});
-
-function openLibraryModal() {
+// การคลิกดูหมวดหมู่ใด ๆ ในคลังความรู้ระหว่างอยู่ใน Stage 1 / 2 / 3 (ครั้งแรกของด่านนั้นเท่านั้น)
+// จะได้ InsightPoints โบนัส เพื่อให้รางวัลพฤติกรรมตรวจสอบข้อมูลก่อนตอบคำถาม
+function awardLibraryBonus() {
   const stageKey = state.screen;
-  buildLibraryNav("libraryNavModal", "libraryContentModal");
-  renderKnowledgeCategory("libraryNavModal", "libraryContentModal", defaultLibraryCategory());
-  const bonusNote = $("libraryBonusNote");
-  if (["stage1", "stage2", "stage3"].includes(stageKey) && !state.library.bonusGiven[stageKey]) {
-    state.library.bonusGiven[stageKey] = true;
-    state.insightPoints += 12;
-    updateHud();
-    if (
-      state.library.bonusGiven.stage1 &&
-      state.library.bonusGiven.stage2 &&
-      state.library.bonusGiven.stage3 &&
-      !state.badges.includes("critical")
-    ) {
-      state.badges.push("critical");
-    }
-    bonusNote.hidden = false;
-    saveState();
-  } else {
-    bonusNote.hidden = true;
+  if (!["stage1", "stage2", "stage3"].includes(stageKey)) return;
+  if (state.library.bonusGiven[stageKey]) return;
+  state.library.bonusGiven[stageKey] = true;
+  state.insightPoints += 12;
+  updateHud();
+  if (
+    state.library.bonusGiven.stage1 &&
+    state.library.bonusGiven.stage2 &&
+    state.library.bonusGiven.stage3 &&
+    !state.badges.includes("critical")
+  ) {
+    state.badges.push("critical");
   }
-  $("libraryModal").hidden = false;
+  updateLibraryBonusNote();
+  saveState();
 }
 
-function closeLibraryModal() {
-  $("libraryModal").hidden = true;
+function updateLibraryBonusNote() {
+  const note = $("libraryBonusNote");
+  if (!note) return;
+  const stageKey = state.screen;
+  note.hidden = !(["stage1", "stage2", "stage3"].includes(stageKey) && state.library.bonusGiven[stageKey]);
 }
-
-$("btnOpenLibrary").addEventListener("click", openLibraryModal);
-$("btnCloseLibrary").addEventListener("click", closeLibraryModal);
 
 /* =========================================================
    4. STAGE 0 — HUMAN RIGHTS FOUNDATION
@@ -1064,9 +1074,11 @@ $("btnResetHud").addEventListener("click", resetAll);
 
 function init() {
   loadState();
+  // ความเข้ากันได้ย้อนหลัง: หน้า "library" แบบเดิม (ก่อนปรับเป็นคอลัมน์ซ้ายถาวร) ถูกยุบรวมเข้ากับ Stage 0 แล้ว
+  if (state.screen === "library") state.screen = "stage0";
   if (state.studentId && state.track && state.screen !== "start") {
+    initLibrarySidebar();
     // resume where left off (best-effort — re-render current stage entry point)
-    if (state.screen === "library") { showScreen("library"); renderLibraryIntro(); return; }
     if (state.screen === "stage0" && !state.stage0.done) { showScreen("stage0"); renderFoundation(state.stage0.index || 0); return; }
     if (state.screen === "stage1") { showScreen("stage1"); renderQuiz(state.stage1.index || 0); return; }
     if (state.screen === "stage2") { showScreen("stage2"); renderScenario(state.stage2.index || 0); return; }
