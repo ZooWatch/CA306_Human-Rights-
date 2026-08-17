@@ -312,6 +312,24 @@ const DEBRIEF_QUESTIONS = [
 
 // วาง URL ของ Google Apps Script Web App ที่ deploy แล้วตรงนี้ (ดูวิธีทำใน README.md)
 const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+// ทางเลือกแทน Google Sheet: ลิงก์ Microsoft Form แบบ pre-fill (ดูวิธีทำใน README.md หัวข้อ
+// "วิธีตั้งค่าให้อาจารย์เห็นผลคะแนนทุกคนอัตโนมัติผ่าน Microsoft Forms")
+// วิธีหาค่าเหล่านี้: เปิดฟอร์มใน forms.office.com > "..." > Get pre-filled link > กรอกค่าตัวอย่าง
+// แล้วกด Get Prefilled Link จะได้ URL เต็ม ให้แยกส่วน "id=...&r...=" ตามด้านล่างนี้
+const MS_FORMS_BASE_URL =
+  "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=gnzLDoQbNkut7yCBtcESW4n4816a8PBCjVoi3DfBlG1UQlNKM0hTVkU5M0JPRTRBRU1GOUROUEpBUiQlQCNjPTEu";
+const MS_FORMS_FIELD_IDS = {
+  studentId: "r0d5d346dca3749f683fcd7aaf8fed176",
+  firstName: "r9e70e457c67c46c3bfd88804d724a35f",
+  lastName: "r5365b83568924219a95b873cab9b9ac8",
+  track: "r00ac378197f64e4e831923a7385bb83a",
+  rightsPoints: "r1145fa7e4baf41939b6f972fb5ffa57f",
+  insightPoints: "rb4373505f99b44a38d8112ea963101f8",
+  total: "r3678ad47351e478a9de7f31948330480",
+  badges: "r64ff05d8ef36479e8f66e29534aa3019",
+};
+
 const STORAGE_KEY = "studio2560_state_v1";
 
 /* =========================================================
@@ -889,6 +907,10 @@ function renderDebrief() {
     list.appendChild(li);
   });
 
+  const showMsForms = isMsFormsConfigured() && state.consent;
+  $("btnMsForms").hidden = !showMsForms;
+  $("msFormsHint").hidden = !showMsForms;
+
   submitToGoogleSheet();
 }
 
@@ -962,6 +984,41 @@ function submitToGoogleSheet() {
   $("gsForm").submit();
   $("submitStatus").hidden = false;
 }
+
+function isMsFormsConfigured() {
+  return (
+    MS_FORMS_BASE_URL &&
+    MS_FORMS_BASE_URL.trim() !== "" &&
+    Object.values(MS_FORMS_FIELD_IDS).every((v) => v && v.trim() !== "")
+  );
+}
+
+function buildMsFormsPrefillUrl() {
+  const trackLabel = TRACKS.find((t) => t.key === state.track).name;
+  const badgeLabels = state.badges
+    .map((k) => (BADGES.find((b) => b.key === k) || {}).name)
+    .filter(Boolean)
+    .join(", ");
+  const total = state.rightsPoints + state.insightPoints;
+  const values = {
+    [MS_FORMS_FIELD_IDS.studentId]: state.studentId,
+    [MS_FORMS_FIELD_IDS.firstName]: state.firstName,
+    [MS_FORMS_FIELD_IDS.lastName]: state.lastName,
+    [MS_FORMS_FIELD_IDS.track]: trackLabel,
+    [MS_FORMS_FIELD_IDS.rightsPoints]: String(state.rightsPoints),
+    [MS_FORMS_FIELD_IDS.insightPoints]: String(state.insightPoints),
+    [MS_FORMS_FIELD_IDS.total]: String(total),
+    [MS_FORMS_FIELD_IDS.badges]: badgeLabels,
+  };
+  const query = Object.entries(values)
+    .map(([id, val]) => `${id}=${encodeURIComponent(val)}`)
+    .join("&");
+  return `${MS_FORMS_BASE_URL}&${query}`;
+}
+
+$("btnMsForms").addEventListener("click", () => {
+  window.open(buildMsFormsPrefillUrl(), "_blank", "noopener");
+});
 
 $("btnResetAll").addEventListener("click", () => {
   if (!confirm("ต้องการเริ่มกิจกรรมใหม่ทั้งหมดใช่หรือไม่? ข้อมูลเดิมจะถูกลบ")) return;
