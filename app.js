@@ -555,38 +555,69 @@ function defaultLibraryCategory() {
   return "udhr";
 }
 
+// สร้างรายการหมวดหมู่แบบ accordion: คลิกปุ่มหัวข้อแล้วเนื้อหาเปิดเป็น dropdown ลงมาใต้หัวข้อนั้นทันที
+// (เปิดได้ทีละหมวดหมู่ — คลิกหมวดใหม่จะพับหมวดเดิมลงอัตโนมัติ)
 function buildLibrarySidebarNav() {
   const nav = $("librarySidebarNav");
   nav.innerHTML = "";
   KNOWLEDGE_CATEGORY_ORDER.forEach((key) => {
     const cat = KNOWLEDGE_BASE[key];
-    const b = document.createElement("button");
-    b.className = "library-nav-btn";
-    b.dataset.key = key;
-    b.innerHTML = `<span class="library-nav-icon">${cat.icon}</span><span>${cat.label}</span>`;
-    b.addEventListener("click", () => {
-      renderKnowledgeCategory(key);
-      awardLibraryBonus();
-    });
-    nav.appendChild(b);
+
+    const item = document.createElement("div");
+    item.className = "library-item";
+    item.dataset.key = key;
+
+    const btn = document.createElement("button");
+    btn.className = "library-nav-btn";
+    btn.dataset.key = key;
+    btn.setAttribute("aria-expanded", "false");
+    btn.innerHTML =
+      `<span class="library-nav-icon">${cat.icon}</span>` +
+      `<span class="library-nav-label">${cat.label}</span>` +
+      `<span class="library-chevron">▾</span>`;
+    btn.addEventListener("click", () => toggleLibraryItem(key));
+
+    const dropdown = document.createElement("div");
+    dropdown.className = "library-dropdown";
+    dropdown.hidden = true;
+    dropdown.innerHTML =
+      `<p class="library-intro-text">${cat.intro}</p>` +
+      cat.sections.map((s) => `<div class="library-section"><h5>${s.h}</h5><p>${s.p}</p></div>`).join("");
+
+    item.appendChild(btn);
+    item.appendChild(dropdown);
+    nav.appendChild(item);
   });
 }
 
-function renderKnowledgeCategory(key) {
+function toggleLibraryItem(key) {
   const nav = $("librarySidebarNav");
-  const content = $("librarySidebarContent");
-  [...nav.children].forEach((b) => b.classList.toggle("active", b.dataset.key === key));
-  const cat = KNOWLEDGE_BASE[key];
-  content.innerHTML =
-    `<div class="library-cat-head"><span class="library-cat-icon">${cat.icon}</span><h4>${cat.label}</h4></div>` +
-    `<p class="library-intro-text">${cat.intro}</p>` +
-    cat.sections.map((s) => `<div class="library-section"><h5>${s.h}</h5><p>${s.p}</p></div>`).join("");
-  content.scrollTop = 0;
+  const items = [...nav.children];
+  let opened = false;
+  items.forEach((item) => {
+    const btn = item.querySelector(".library-nav-btn");
+    const dropdown = item.querySelector(".library-dropdown");
+    if (item.dataset.key === key) {
+      dropdown.hidden = !dropdown.hidden;
+      opened = !dropdown.hidden;
+      btn.classList.toggle("active", opened);
+      btn.setAttribute("aria-expanded", String(opened));
+    } else {
+      dropdown.hidden = true;
+      btn.classList.remove("active");
+      btn.setAttribute("aria-expanded", "false");
+    }
+  });
+  if (opened) {
+    awardLibraryBonus();
+    const openedItem = items.find((item) => item.dataset.key === key);
+    if (openedItem) openedItem.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
 }
 
 function initLibrarySidebar() {
   buildLibrarySidebarNav();
-  renderKnowledgeCategory(defaultLibraryCategory());
+  toggleLibraryItem(defaultLibraryCategory());
   updateLibraryBonusNote();
 }
 
