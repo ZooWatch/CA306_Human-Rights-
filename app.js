@@ -465,9 +465,16 @@ const screens = ["start", "stage0", "stage1", "stage2", "stage3", "stage4"];
 // เพื่อให้ปุ่ม "← ย้อนกลับ" พาไปยังหน้าก่อนหน้าตามลำดับที่ผู้เล่นเดินทางมาจริง
 const navHistory = [];
 
+function canStepBackWithinStage() {
+  if (state.screen === "stage0") return state.stage0.index > 0;
+  if (state.screen === "stage1") return state.stage1.index > 0;
+  if (state.screen === "stage2") return state.stage2.index > 0;
+  return false;
+}
+
 function updateBackButton() {
   const btn = $("btnBackHud");
-  if (btn) btn.disabled = navHistory.length === 0;
+  if (btn) btn.disabled = navHistory.length === 0 && !canStepBackWithinStage();
 }
 
 function showScreen(name, opts) {
@@ -500,10 +507,22 @@ function renderScreenEntry(name) {
 
 let lastBackClickAt = 0;
 function goBack() {
-  if (!navHistory.length) return;
+  const withinStage = canStepBackWithinStage();
+  if (!navHistory.length && !withinStage) return;
   const now = Date.now();
   if (now - lastBackClickAt < 400) return; // กันคลิกรัว ๆ ที่จะดึงกลับหลายสเต็ปพร้อมกัน
   lastBackClickAt = now;
+
+  if (withinStage) {
+    // ถอยกลับทีละข้อ/ทีละสถานการณ์ภายในด่านเดียวกันก่อน แทนที่จะกระโดดไปด่านก่อนหน้าเลย
+    if (state.screen === "stage0") { renderFoundation(state.stage0.index - 1); }
+    else if (state.screen === "stage1") { renderQuiz(state.stage1.index - 1); }
+    else if (state.screen === "stage2") { renderScenario(state.stage2.index - 1); }
+    updateBackButton();
+    saveState();
+    return;
+  }
+
   const prev = navHistory.pop();
   showScreen(prev, { skipHistory: true });
   renderScreenEntry(prev);
@@ -734,8 +753,17 @@ function selectFoundationScenario(si) {
   });
   const correct = si === item.correctScenario;
   if (!correct) state.stage0.allCorrectFirstTry = false;
-  if (state.stage0.articleChoice === item.correctArticle) state.rightsPoints += 5;
-  if (correct) state.rightsPoints += 5;
+
+  // ถ้าข้อนี้เคยตอบไปแล้ว (เช่น ผู้เล่นกด "ย้อนกลับ" มาตอบใหม่) ให้ย้อนคะแนนเดิมของข้อนี้ออกก่อน
+  if (!state.stage0.scoredItems) state.stage0.scoredItems = {};
+  const prevScore = state.stage0.scoredItems[state.stage0.index];
+  if (prevScore) state.rightsPoints -= prevScore;
+
+  let newScore = 0;
+  if (state.stage0.articleChoice === item.correctArticle) newScore += 5;
+  if (correct) newScore += 5;
+  state.rightsPoints += newScore;
+  state.stage0.scoredItems[state.stage0.index] = newScore;
   updateHud();
 
   const fb = $("foundationFeedback");
@@ -816,6 +844,15 @@ function lockQuizAnswer(selected) {
   const q = QUIZ_QUESTIONS[state.stage1.index];
   const wrap = $("quizChoices");
   const correct = selected === q.correct;
+
+  // ถ้าข้อนี้เคยตอบไปแล้ว (เช่น ผู้เล่นกด "ย้อนกลับ" มาตอบใหม่) ให้ย้อนคะแนนเดิมออกก่อน
+  // เพื่อไม่ให้ได้แต้ม/คะแนนซ้ำซ้อนจากข้อเดียวกัน
+  const prevAnswer = state.stage1.answers[state.stage1.index];
+  if (prevAnswer) {
+    if (prevAnswer.correct) { state.rightsPoints -= 10; state.stage1.score--; }
+    else if (prevAnswer.selected >= 0) { state.rightsPoints -= 2; }
+  }
+
   [...wrap.children].forEach((el, idx) => {
     el.disabled = true;
     if (idx === q.correct) el.classList.add("correct");
@@ -895,6 +932,14 @@ function renderScenario(index) {
     if (chosen === null) return;
     const opt = s.options[chosen];
     [...wrap.children].forEach((el) => el.disabled = true);
+
+    // ถ้าสถานการณ์นี้เคยตอบไปแล้ว (เช่น ผู้เล่นกด "ย้อนกลับ" มาตอบใหม่) ให้ย้อนคะแนนเดิมออกก่อน
+    const prevAnswer = state.stage2.answers[index];
+    if (prevAnswer) {
+      state.rightsPoints -= prevAnswer.best ? 15 : 5;
+      state.insightPoints -= insightFromText(prevAnswer.reason, 15);
+    }
+
     state.rightsPoints += opt.best ? 15 : 5;
     const reasonText = $("scenarioReason").value.trim();
     state.insightPoints += insightFromText(reasonText, 15);
