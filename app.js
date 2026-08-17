@@ -1,7 +1,7 @@
 /* =========================================================
    STUDIO 2560 — ภารกิจนักสื่อสารผู้เท่าทันสิทธิ
    CA306 กฎหมายและจริยธรรมนิเทศศาสตร์
-   Prototype ตามเอกสารออกแบบระบบ Gamification (90 นาที)
+   Prototype ตามเอกสารออกแบบระบบ Gamification (~85 นาที)
    ========================================================= */
 
 /* =========================================================
@@ -13,6 +13,86 @@ const TRACKS = [
   { key: "imc", icon: "📈", name: "นิเทศศาสตร์การตลาด", desc: "แคมเปญโฆษณา ข้อมูลผู้บริโภค อินฟลูเอนเซอร์" },
   { key: "bc", icon: "🎙️", name: "กระจายเสียง/สตรีมมิ่ง", desc: "ไลฟ์สด รายการข่าว ชุมชนผู้ชมออนไลน์" },
 ];
+
+// ---- Knowledge Library: reference content shown before gameplay + accessible throughout ----
+// จับคู่กับสาย track เพื่อเลือกหมวดสื่อที่จะแสดงเป็นค่าเริ่มต้น
+const KNOWLEDGE_BASE = {
+  udhr: {
+    icon: "🌍",
+    label: "ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน (UDHR)",
+    intro: "ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน (Universal Declaration of Human Rights) ปี ค.ศ. 1948 คือรากฐานของสิทธิมนุษยชนสมัยใหม่ทั่วโลก แม้จะไม่มีสภาพบังคับทางกฎหมายโดยตรงเท่าสนธิสัญญา แต่ประเทศต่าง ๆ รวมถึงไทยยึดเป็นหลักการอ้างอิงในการร่างรัฐธรรมนูญและกฎหมายภายใน",
+    sections: [
+      { h: "ข้อ 1 — ศักดิ์ศรีและความเสมอภาค", p: "มนุษย์ทุกคนเกิดมาอย่างเสรีและเท่าเทียมกันในศักดิ์ศรีและสิทธิ นี่คือหลักการรากฐานที่สุดที่สิทธิอื่นทั้งหมดต่อยอดขึ้นมา ตรงกับมาตรา 4 ของรัฐธรรมนูญไทยที่วางศักดิ์ศรีความเป็นมนุษย์ไว้เป็นหลักการนำ" },
+      { h: "ข้อ 8 — สิทธิที่จะได้รับการเยียวยา", p: "ทุกคนมีสิทธิที่จะได้รับการเยียวยาอย่างมีประสิทธิภาพจากศาลเมื่อสิทธิขั้นพื้นฐานถูกละเมิด สอดคล้องกับมาตรา 25 ของรัฐธรรมนูญไทยที่ให้ผู้ถูกละเมิดสิทธิใช้สิทธิทางศาลได้โดยตรง" },
+      { h: "ข้อ 12 — ความเป็นส่วนตัว", p: "บุคคลจะถูกแทรกแซงความเป็นส่วนตัว ครอบครัว ที่อยู่อาศัย หรือการติดต่อสื่อสารตามอำเภอใจไม่ได้ และมีสิทธิได้รับการคุ้มครองจากการแทรกแซงเช่นนั้น ตรงกับมาตรา 32 และ 36 ของรัฐธรรมนูญไทย" },
+      { h: "ข้อ 18-19 — เสรีภาพทางความคิดและการแสดงออก", p: "ทุกคนมีสิทธิในเสรีภาพทางความคิด มโนธรรม และศาสนา รวมถึงสิทธิที่จะแสวงหา รับ และเผยแพร่ข่าวสารและความคิดเห็นผ่านสื่อใด ๆ โดยไม่จำกัดพรมแดน ข้อ 19 นี้คือหัวใจของเสรีภาพสื่อมวลชนสากล ตรงกับมาตรา 31 และมาตรา 34 ของรัฐธรรมนูญไทย" },
+      { h: "ข้อ 23 — สิทธิในการทำงาน", p: "ทุกคนมีสิทธิในการทำงานและเลือกอาชีพได้อย่างเสรี รับรองสถานะของอาชีพใหม่ ๆ เช่น อินฟลูเอนเซอร์และสตรีมเมอร์ในฐานะผู้ประกอบอาชีพอิสระ ตรงกับมาตรา 40 ของรัฐธรรมนูญไทย" },
+      { h: "ข้อ 27 — สิทธิของผู้สร้างสรรค์ผลงาน", p: "ทุกคนมีสิทธิได้รับความคุ้มครองผลประโยชน์ทางศีลธรรมและทางวัตถุจากผลงานสร้างสรรค์ทางวิทยาศาสตร์ วรรณกรรม หรือศิลปะของตน เป็นฐานคิดของกฎหมายลิขสิทธิ์ ตรงกับมาตรา 37 ของรัฐธรรมนูญไทยเรื่องสิทธิในทรัพย์สิน" },
+    ],
+  },
+  iccpr: {
+    icon: "📜",
+    label: "กติการะหว่างประเทศ ICCPR และการจำกัดสิทธิ",
+    intro: "กติการะหว่างประเทศว่าด้วยสิทธิพลเมืองและสิทธิทางการเมือง (ICCPR) เป็นสนธิสัญญาที่ไทยเข้าเป็นภาคีและมีผลผูกพันทางกฎหมายจริง (ต่างจาก UDHR ที่เป็นเพียงปฏิญญา) จึงมีรายละเอียดเรื่อง \"เงื่อนไขการจำกัดสิทธิ\" ที่ชัดเจนกว่า ซึ่งเป็นเครื่องมือสำคัญที่สุดในการวิเคราะห์สถานการณ์ตลอดทั้งภารกิจนี้",
+    sections: [
+      { h: "ข้อ 14 — สิทธิในกระบวนการยุติธรรมที่เป็นธรรม", p: "รวมถึงหลักการสันนิษฐานไว้ก่อนว่าบริสุทธิ์จนกว่าจะพิสูจน์ได้ว่ามีความผิดตามกฎหมาย ตรงกับมาตรา 28-29 ของรัฐธรรมนูญไทย — สำคัญมากกับงานข่าวอาชญากรรมและสารคดีที่เกี่ยวข้องกับคดีความ" },
+      { h: "ข้อ 17 — ความเป็นส่วนตัว", p: "คุ้มครองไม่ให้บุคคลถูกแทรกแซงความเป็นส่วนตัว ครอบครัว หรือถูกโจมตีเกียรติยศและชื่อเสียงโดยไม่ชอบด้วยกฎหมาย ตรงกับมาตรา 32 ของรัฐธรรมนูญไทย" },
+      { h: "ข้อ 19 — เสรีภาพในการแสดงออก", p: "รับรองสิทธิที่จะมีความคิดเห็นโดยปราศจากการแทรกแซง และสิทธิในเสรีภาพการแสดงออกซึ่งรวมถึงเสรีภาพที่จะแสวงหา รับ และเผยแพร่ข่าวสารทุกประเภท แต่ก็เป็นข้อเดียวใน ICCPR ที่วางเงื่อนไขการจำกัดไว้อย่างละเอียดที่สุด" },
+      { h: "แบบทดสอบสามชั้น (Three-Part Test) ของข้อ 19 วรรค 3", p: "การจำกัดเสรีภาพในการแสดงออกจะชอบธรรมได้ต้องผ่านทั้ง 3 เงื่อนไขพร้อมกัน: (1) Provided by Law — กำหนดไว้โดยกฎหมายที่ชัดเจนเข้าถึงได้ (2) Legitimate Aim — มีวัตถุประสงค์ชอบธรรม เช่น ความมั่นคง ความสงบเรียบร้อย หรือสิทธิของผู้อื่น (3) Necessary & Proportionate — จำเป็นและได้สัดส่วนกับเป้าหมายนั้นจริง ๆ ไม่มากเกินไป นี่คือเครื่องมือหลักที่ใช้ประเมินสถานการณ์ตลอดเกมนี้" },
+    ],
+  },
+  constitution: {
+    icon: "🇹🇭",
+    label: "รัฐธรรมนูญไทย 2560: สิทธิเสรีภาพของบุคคลทั่วไป",
+    intro: "รัฐธรรมนูญแห่งราชอาณาจักรไทย พุทธศักราช 2560 หมวด 3 ว่าด้วยสิทธิและเสรีภาพของปวงชนชาวไทย คือกฎหมายสูงสุดภายในประเทศที่รับรองสิทธิเหล่านี้ให้มีผลบังคับใช้จริง ควรตรวจสอบเลขมาตราและถ้อยคำกับต้นฉบับทางการก่อนนำไปอ้างอิงใช้งานจริงเสมอ",
+    sections: [
+      { h: "มาตรา 4 — ศักดิ์ศรีความเป็นมนุษย์", p: "ศักดิ์ศรีความเป็นมนุษย์ สิทธิ เสรีภาพ และความเสมอภาคของบุคคลย่อมได้รับความคุ้มครอง เป็นหลักการนำของหมวดสิทธิเสรีภาพทั้งหมด" },
+      { h: "มาตรา 25 — กรอบสิทธิเสรีภาพทั่วไป", p: "การใดที่มิได้ห้ามหรือจำกัดไว้ในรัฐธรรมนูญหรือกฎหมายอื่น บุคคลย่อมมีสิทธิเสรีภาพที่จะทำการนั้นได้และได้รับความคุ้มครอง และบุคคลที่ถูกละเมิดสิทธิเสรีภาพสามารถยกบทบัญญัตินี้ขึ้นใช้สิทธิทางศาลได้โดยตรง" },
+      { h: "มาตรา 27 — ความเสมอภาค", p: "บุคคลย่อมเสมอกันในกฎหมาย การเลือกปฏิบัติโดยไม่เป็นธรรมต่อบุคคลด้วยเหตุความแตกต่างในเรื่องถิ่นกำเนิด เชื้อชาติ ภาษา เพศ ศาสนา ฯลฯ จะกระทำมิได้ — สำคัญมากกับงานโฆษณาและคอนเทนต์ที่มีความเสี่ยงตอกย้ำอคติ" },
+      { h: "มาตรา 28-29 — สันนิษฐานไว้ก่อนว่าบริสุทธิ์", p: "บุคคลไม่ต้องรับโทษอาญาเว้นแต่ได้กระทำการที่กฎหมายบัญญัติเป็นความผิด และในคดีอาญาต้องสันนิษฐานไว้ก่อนว่าผู้ต้องหาหรือจำเลยไม่มีความผิดจนกว่าจะมีคำพิพากษาถึงที่สุด — เกี่ยวข้องโดยตรงกับจริยธรรมการรายงานข่าวอาชญากรรม" },
+      { h: "มาตรา 31 — เสรีภาพทางศาสนา", p: "บุคคลย่อมมีเสรีภาพบริบูรณ์ในการถือศาสนาและปฏิบัติตามหลักศาสนาของตน" },
+      { h: "มาตรา 32 — ความเป็นส่วนตัว เกียรติยศ ชื่อเสียง", p: "สิทธิในความเป็นอยู่ส่วนตัว เกียรติยศ ชื่อเสียง และครอบครัวย่อมได้รับความคุ้มครอง การกระทำที่ละเมิดสิทธิเหล่านี้จะกระทำมิได้ เว้นแต่เพื่อประโยชน์สาธารณะ — เป็นสิทธิที่ปะทะกับเสรีภาพสื่อบ่อยที่สุด" },
+      { h: "มาตรา 34 — เสรีภาพแสดงความคิดเห็น", p: "บุคคลย่อมมีเสรีภาพในการแสดงความคิดเห็น การพูด การเขียน การพิมพ์ การโฆษณา และการสื่อความหมายโดยวิธีอื่น จำกัดได้เฉพาะโดยกฎหมายที่ตราขึ้นเพื่อความมั่นคงของรัฐ สิทธิของบุคคลอื่น หรือความสงบเรียบร้อย — คุ้มครองประชาชนทุกคน ไม่ใช่เฉพาะสื่อมวลชน" },
+      { h: "มาตรา 36 — เสรีภาพการสื่อสาร", p: "บุคคลย่อมมีเสรีภาพในการติดต่อสื่อสารถึงกัน ห้ามตรวจ กัก หรือเปิดเผยข้อความที่บุคคลสื่อสารถึงกันโดยไม่มีอำนาจตามกฎหมาย" },
+      { h: "มาตรา 37 — สิทธิในทรัพย์สิน", p: "บุคคลย่อมมีสิทธิในทรัพย์สินและการสืบมรดก ครอบคลุมถึงทรัพย์สินทางปัญญาด้วย — พบบ่อยในประเด็นลิขสิทธิ์เพลง ภาพ และผลงานสร้างสรรค์" },
+      { h: "มาตรา 40 — เสรีภาพในการประกอบอาชีพ", p: "บุคคลย่อมมีเสรีภาพในการประกอบอาชีพ รับรองสถานะของอาชีพใหม่ ๆ เช่น อินฟลูเอนเซอร์และสตรีมเมอร์ในฐานะผู้ประกอบอาชีพอิสระ" },
+      { h: "หมวด 5 — การคุ้มครองผู้บริโภค", p: "รัฐธรรมนูญ 2560 ย้ายเรื่องการคุ้มครองผู้บริโภคไปไว้เป็น \"หน้าที่ของรัฐ\" ในหมวด 5 แทนที่จะบัญญัติเป็น \"สิทธิ\" ของผู้บริโภคโดยตรงเหมือนฉบับก่อนหน้า ทำให้มีสถานะทางกฎหมายที่อ่อนกว่าสิทธิที่ฟ้องศาลได้โดยตรง กฎหมายเฉพาะอย่าง พ.ร.บ.คุ้มครองผู้บริโภค และ PDPA จึงมีความสำคัญมากในการอุดช่องว่างนี้" },
+    ],
+  },
+  "media-df": {
+    icon: "🎬",
+    label: "สิทธิเสรีภาพสื่อ: สายดิจิทัลฟิล์ม",
+    intro: "งานสายภาพยนตร์และวิดีโอมีจุดตัดสำคัญระหว่างเสรีภาพทางศิลปะกับสิทธิของบุคคลที่ปรากฏในผลงาน รวมถึงกลไกการกำกับดูแลเนื้อหาก่อนเผยแพร่",
+    sections: [
+      { h: "เสรีภาพทางศิลปะ vs ความยินยอมของผู้ปรากฏตัว", p: "เสรีภาพในการสร้างสรรค์งานศิลปะได้รับความคุ้มครองตามมาตรา 34 แต่เมื่อผู้แสดงหรือบุคคลในภาพถอนความยินยอม (consent) หลักความยินยอมย่อมมีน้ำหนักเหนือความสะดวกในการผลิต โดยเฉพาะเมื่อกระทบสิทธิความเป็นส่วนตัวตามมาตรา 32" },
+      { h: "การเซ็นเซอร์และการจัดเรตติ้งภาพยนตร์", p: "ภาพยนตร์เชิงพาณิชย์ในไทยต้องผ่านการพิจารณาจากคณะกรรมการภาพยนตร์และวีดิทัศน์แห่งชาติตาม พ.ร.บ.ภาพยนตร์และวีดิทัศน์ พ.ศ. 2551 ระบบนี้ต้องประเมินด้วยแบบทดสอบสามชั้นของ ICCPR ข้อ 19 ว่ามีกฎหมายรองรับชัดเจน มีวัตถุประสงค์ชอบธรรม และได้สัดส่วนหรือไม่ — ควรแยกให้ออกระหว่าง Pre-censorship (ตรวจก่อนฉาย) กับ Post-publication liability (รับผิดชอบทางกฎหมายภายหลังการเผยแพร่)" },
+      { h: "ลิขสิทธิ์ในงานภาพยนตร์", p: "การใช้เพลงหรือภาพที่มีลิขสิทธิ์โดยไม่ได้รับอนุญาต แม้จะใส่เครดิตผู้แต่งแล้วก็ยังคงละเมิดสิทธิในทรัพย์สินทางปัญญาตามมาตรา 37 ทางออกที่ถูกต้องคือขออนุญาตเจ้าของลิขสิทธิ์ หรือใช้สื่อที่มีสัญญาอนุญาตแบบเปิด (Creative Commons/Royalty-free)" },
+      { h: "สารคดีกับคดีที่ยังไม่สิ้นสุด", p: "การเผยแพร่ชื่อและภาพผู้ต้องหาที่คดียังไม่สิ้นสุดในรูปแบบสารคดี แม้ข้อมูลจะเคยปรากฏในข่าวมาก่อน ก็ยังกระทบสิทธิในชื่อเสียงตามมาตรา 32 และหลักสันนิษฐานไว้ก่อนว่าบริสุทธิ์ตามมาตรา 28-29 อย่างมีนัยสำคัญ เพราะสารคดีเข้าถึงผู้ชมกลุ่มใหม่และคงอยู่ถาวรกว่าข่าวประจำวัน" },
+    ],
+  },
+  "media-imc": {
+    icon: "📈",
+    label: "สิทธิเสรีภาพสื่อ: สายนิเทศศาสตร์การตลาด",
+    intro: "งานสายการตลาดและโฆษณาต้องชั่งน้ำหนักระหว่างเสรีภาพทางการค้ากับสิทธิของผู้บริโภค ซึ่งกฎหมายสากลมักคุ้มครอง \"การสื่อสารเชิงพาณิชย์\" (Commercial Speech) ในระดับที่แคบกว่าเสรีภาพประเภทอื่น",
+    sections: [
+      { h: "Commercial Speech ได้รับความคุ้มครองแคบกว่า", p: "แม้เสรีภาพในการโฆษณาจะได้รับความคุ้มครองในฐานะส่วนหนึ่งของมาตรา 34 แต่การสื่อสารเชิงพาณิชย์มักได้รับการคุ้มครองแคบกว่าการแสดงออกทางการเมืองหรือศิลปะ เพราะรัฐมีผลประโยชน์สาธารณะในการป้องกันโฆษณาที่ทำให้เข้าใจผิดหรือก่อความเสียหายทางการค้าอย่างไม่เป็นธรรม" },
+      { h: "ข้อมูลส่วนบุคคลกับ PDPA", p: "การยอมรับเงื่อนไขการใช้งานแบบกว้าง ๆ ไม่เท่ากับความยินยอมที่ชัดเจนเฉพาะเจาะจงตามหลัก PDPA (พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล) สิทธิความเป็นส่วนตัวตามมาตรา 32 และเสรีภาพในการสื่อสารตามมาตรา 36 คุ้มครองไม่ให้มีการใช้ข้อมูลที่บุคคลสื่อสารถึงกันโดยพลการ" },
+      { h: "โฆษณาแฝงและหน้าที่เปิดเผยสถานะ", p: "การไม่เปิดเผยว่าเนื้อหาคือโฆษณาที่ได้รับค่าตอบแทน เข้าข่ายโฆษณาแฝงที่อาจทำให้ผู้บริโภคหลงเชื่อว่าเป็นความเห็นอิสระ แม้เสรีภาพในการโฆษณาจะได้รับการคุ้มครองตามมาตรา 34 แต่สิทธิของผู้บริโภคที่จะได้รับข้อมูลถูกต้องและไม่ถูกหลอกลวงเป็นหลักการคู่ขนานเสมอ โดยเฉพาะสินค้ากลุ่มสุขภาพที่มีความเสี่ยงสูง" },
+      { h: "ความเสมอภาคในงานสร้างสรรค์โฆษณา", p: "มาตรา 27 ห้ามการเลือกปฏิบัติโดยไม่เป็นธรรมด้วยเหตุความแตกต่าง เช่น เชื้อชาติหรือวัฒนธรรม แม้ผู้สร้างสรรค์จะไม่มีเจตนาร้าย แต่ผลกระทบต่อกลุ่มที่ถูกพาดพิงคือสิ่งที่กฎหมายและจริยธรรมให้ความสำคัญ ไม่ใช่เพียงเจตนาของผู้สร้าง" },
+    ],
+  },
+  "media-bc": {
+    icon: "🎙️",
+    label: "สิทธิเสรีภาพสื่อ: สายกระจายเสียง/สตรีมมิ่ง",
+    intro: "งานสายกระจายเสียงและสตรีมมิ่งมีลักษณะพิเศษคือต้องพึ่งพาใบอนุญาตจากรัฐ และมีคำถามเรื่องสถานะ \"ผู้ประกอบวิชาชีพสื่อมวลชน\" ที่ยังไม่มีข้อยุติชัดเจนสำหรับคอนเทนต์ครีเอเตอร์ยุคใหม่",
+    sections: [
+      { h: "มาตรา 35 — เสรีภาพผู้ประกอบวิชาชีพสื่อมวลชน", p: "รัฐธรรมนูญ 2560 บัญญัติเสรีภาพของ \"ผู้ประกอบวิชาชีพสื่อมวลชน\" ไว้แคบกว่าเสรีภาพในการแสดงออกทั่วไปตามมาตรา 34 คำถามว่าสตรีมเมอร์/ยูทูบเบอร์เข้าข่ายผู้ประกอบวิชาชีพสื่อมวลชนหรือไม่ยังเป็นประเด็นถกเถียงจริงในวงวิชาการและวงกฎหมาย" },
+      { h: "การกำกับดูแลกิจการกระจายเสียง (กสทช.)", p: "กิจการกระจายเสียงและโทรทัศน์ต้องมีใบอนุญาตจากสำนักงาน กสทช. ตาม พ.ร.บ.การประกอบกิจการกระจายเสียงและกิจการโทรทัศน์ พ.ศ. 2551 ทำให้เกิดความเสี่ยงเชิงโครงสร้างที่การรายงานข่าววิพากษ์วิจารณ์รัฐอาจถูกกดดันผ่านกลไกใบอนุญาตได้ หลักสากลจึงเน้นว่าการกำกับดูแลต้องมีมาตรฐานชัดเจน โปร่งใส และไม่ใช้เป็นเครื่องมือเซ็นเซอร์ทางการเมืองโดยอ้อม" },
+      { h: "อันดับเสรีภาพสื่อของไทย", p: "ดัชนีเสรีภาพสื่อโลก (World Press Freedom Index) โดย Reporters Without Borders (RSF) จัดอันดับไทยไว้ที่ 85 จาก 180 ประเทศในปี 2025 ดีขึ้นจากอันดับ 87 ในปี 2024 และดีที่สุดในอาเซียน แต่ตัวเลขอันดับเพียงอย่างเดียวไม่ได้บอกเล่าความซับซ้อนของโครงสร้างการกำกับดูแลได้ครบถ้วน" },
+      { h: "จริยธรรมการไลฟ์สดและความเป็นส่วนตัวของผู้ชม", p: "เสรีภาพในการเสนอข่าวตามมาตรา 35 ต้องอยู่ภายใต้จริยธรรมวิชาชีพเสมอ การจับภาพระยะใกล้ของบุคคลทั่วไปที่ไม่เกี่ยวข้องกับเหตุการณ์ โดยเฉพาะในสภาวะตื่นตระหนก อาจกระทบสิทธิความเป็นส่วนตัวและศักดิ์ศรีความเป็นมนุษย์โดยไม่จำเป็นต่อการรายงานข่าว" },
+    ],
+  },
+};
 
 // ---- Stage 0: Human Rights Foundation matching ----
 const FOUNDATION_ITEMS = [
@@ -248,23 +328,7 @@ const SCENARIOS = {
   ],
 };
 
-// ---- Stage 3: Sorting Chamber (12 cases, 3 zones) ----
-const SORTING_CASES = [
-  { no: 1, zone: "ok", text: "ทีมคอนเทนต์ซื้อภาพจากคลังภาพลิขสิทธิ์ถูกต้อง (Stock Photo) มาใช้ทำโฆษณาสินค้า พร้อมให้เครดิตตามเงื่อนไขไลเซนส์ครบถ้วน", reason: "เป็นการใช้ภาพที่ได้รับอนุญาตถูกต้องตามสัญญาอนุญาต ไม่ละเมิดสิทธิในทรัพย์สินทางปัญญาตามมาตรา 37", twist: "หากนำภาพไปใช้ในบริบทที่ขัดกับเงื่อนไขไลเซนส์ (เช่น ใช้เชิงพาณิชย์ทั้งที่ซื้อไลเซนส์แบบส่วนตัว) คำตอบจะเปลี่ยนเป็น \"ทำไม่ได้\" ทันที — ต้องอ่านเงื่อนไขไลเซนส์เสมอ ไม่ใช่แค่ตรวจว่ามีลายน้ำหรือไม่" },
-  { no: 2, zone: "forbidden", text: "นำเพลงดัง 20 วินาทีมาใส่คลิปโฆษณา เพราะคิดว่าใช้ไม่ถึง 30 วินาทีจึงไม่ผิดลิขสิทธิ์", reason: "ไม่มีกฎหมายไทยที่กำหนดว่าใช้เพลงไม่เกิน 30 วินาทีแล้วไม่ผิด นี่เป็นความเข้าใจผิดที่พบบ่อย ยังคงละเมิดสิทธิในทรัพย์สินทางปัญญาตามมาตรา 37", twist: "แม้จะเป็นงานที่ไม่แสวงหากำไร (เช่น โปรเจกต์นักศึกษา) ก็ยังต้องขออนุญาตอยู่ดี เว้นแต่เข้าข้อยกเว้น \"การใช้งานที่เป็นธรรม\" (Fair Use) ตามกฎหมายลิขสิทธิ์ ซึ่งมีเงื่อนไขเฉพาะและไม่ได้ใช้ได้ทุกกรณี" },
-  { no: 3, zone: "unsure", text: "ถ่าย TikTok ในห้างแล้วมีคนแปลกหน้าติดภาพชัดเจน ก่อนนำคลิปขึ้นออนไลน์", reason: "ขึ้นอยู่กับว่าบุคคลนั้นเป็นจุดสนใจหลักของภาพหรือเป็นเพียงส่วนหนึ่งของบรรยากาศสาธารณะ และคลิปกระทบชื่อเสียง/ความเป็นส่วนตัวของเขาหรือไม่", twist: "หากบุคคลในภาพกำลังทำกิจกรรมส่วนตัวที่ละเอียดอ่อน (เช่น ทะเลาะกับคู่รัก ร้องไห้) แม้จะอยู่ในที่สาธารณะก็อาจเข้าข่าย \"ทำไม่ได้\" เพราะกระทบสิทธิความเป็นส่วนตัวตามมาตรา 32 ได้เช่นกัน" },
-  { no: 4, zone: "ok", text: "Influencer รับเงินจากแบรนด์ และติดแฮชแท็ก #ได้รับการสนับสนุน ให้ผู้ชมเห็นชัดเจนในทุกโพสต์", reason: "เปิดเผยสถานะโฆษณาอย่างชัดเจนตามหลักจริยธรรมและกฎหมายคุ้มครองผู้บริโภค ผู้ชมมีข้อมูลเพียงพอในการตัดสินใจ", twist: "หากแฮชแท็กถูกซ่อนอยู่ท้ายแคปชันยาว ๆ จนมองเห็นยาก หรือใช้ฟอนต์เล็กจนอ่านไม่ออก อาจยังถือว่าไม่เปิดเผยอย่างเพียงพอ แม้จะมีคำว่า #ได้รับการสนับสนุน อยู่ก็ตาม" },
-  { no: 5, zone: "forbidden", text: "Beauty Influencer โฆษณาครีมว่า \"รักษาสิวหาย 100% ภายใน 7 วัน\"", reason: "เป็นการโฆษณาเกินจริงที่อาจทำให้ผู้บริโภคเข้าใจผิด และเป็นอันตรายหากผู้บริโภคหยุดการรักษาทางการแพทย์ที่เหมาะสมเพื่อพึ่งพาผลิตภัณฑ์นี้แทน", twist: "แม้ผู้พูดจะระบุว่า \"เป็นประสบการณ์ส่วนตัว ผลลัพธ์อาจแตกต่างกันในแต่ละคน\" ก็ยังไม่เพียงพอที่จะทำให้การกล่าวอ้างสรรพคุณเกินจริงเช่นนี้ถูกต้องตามกฎหมาย โดยเฉพาะกับผลิตภัณฑ์ที่ต้องขึ้นทะเบียน อย. " },
-  { no: 6, zone: "forbidden", text: "บริษัทนำเบอร์โทรและอีเมลที่ลูกค้าให้ตอนสมัครสมาชิกไปส่งโฆษณา โดยไม่เคยแจ้งวัตถุประสงค์นี้", reason: "เป็นการใช้ข้อมูลส่วนบุคคลนอกวัตถุประสงค์ที่แจ้งไว้ตอนเก็บข้อมูล ขัดกับหลักการคุ้มครองข้อมูลส่วนบุคคลและสิทธิความเป็นส่วนตัวตามมาตรา 32", twist: "หากบริษัทเพิ่มช่องทางแจ้งวัตถุประสงค์และให้ลูกค้า \"ยกเลิกรับข่าวสาร\" ได้ง่ายในทุกอีเมล ก็ยังไม่เพียงพอ เพราะปัญหาคือ \"ไม่เคยแจ้งวัตถุประสงค์ตั้งแต่ต้น\" ซึ่งต้องขอความยินยอมใหม่ก่อนใช้ข้อมูลในทางที่ต่างจากเดิม" },
-  { no: 7, zone: "ok", text: "ข่าวเบลอหน้าและปิดเสียงเด็กที่ถูกล่วงละเมิด พร้อมไม่เปิดเผยชื่อ โรงเรียน หรือข้อมูลใด ๆ ที่ระบุตัวตนได้", reason: "ปฏิบัติตามหลักการคุ้มครองเด็กและเยาวชนในงานข่าวอย่างครบถ้วน ป้องกันการระบุตัวตนได้ทุกทาง", twist: "หากยังคงเปิดเผยรายละเอียดอื่นที่รวมกันแล้วทำให้ระบุตัวตนได้ (เช่น ชื่อพ่อแม่ + ที่อยู่คร่าว ๆ + อายุ + เพศ) แม้จะเบลอหน้าแล้วก็ยังถือว่าไม่ปลอดภัยเพียงพอ" },
-  { no: 8, zone: "unsure", text: "กองถ่ายใช้กล้องซ่อนถ่ายฉากในตลาดจริง ทำให้ประชาชนติดภาพชัดเจนโดยไม่รู้ตัว", reason: "ขึ้นอยู่กับวัตถุประสงค์ของการถ่าย (สารคดี/ข่าว/บันเทิง) และมีมาตรการขอความยินยอมย้อนหลังหรือไม่ รวมถึงมีการเบลอหน้าบุคคลที่ไม่เกี่ยวข้องในขั้นตอนตัดต่อหรือไม่", twist: "หากเป็นงานข่าวเชิงสืบสวนที่มีเหตุผลสาธารณะชัดเจน (เช่น เปิดโปงการกระทำผิดกฎหมาย) และมีเป้าหมายเฉพาะเจาะจง อาจเข้าข่าย \"ทำได้\" ภายใต้ข้อยกเว้นประโยชน์สาธารณะ แต่หากเป็นเพียงเพื่อความสมจริงของงานบันเทิง ควรเข้าใกล้โซน \"ทำไม่ได้\" มากกว่า" },
-  { no: 9, zone: "forbidden", text: "นักข่าวแอบบันทึกเสียงแหล่งข่าวโดยไม่แจ้ง แล้วนำเสียงไปออกอากาศ", reason: "การบันทึกและเผยแพร่เสียงบุคคลโดยไม่ได้รับความยินยอมกระทบเสรีภาพในการสื่อสารตามมาตรา 36 และความเป็นส่วนตัวตามมาตรา 32", twist: "หากเนื้อหาที่บันทึกได้เป็นหลักฐานการทุจริตร้ายแรงที่เป็นประโยชน์สาธารณะอย่างชัดเจน และไม่มีวิธีอื่นในการเปิดโปง จริยธรรมวิชาชีพสื่อบางฉบับอาจยอมรับได้เป็นข้อยกเว้น แต่ต้องผ่านการพิจารณาอย่างรอบคอบ ไม่ใช่ทำได้เป็นปกติ" },
-  { no: 10, zone: "forbidden", text: "ทีมโฆษณาใช้ AI สร้างคลิปให้ดาราพูดรับรองสินค้า ทั้งที่ดาราไม่เคยพูดและไม่ได้อนุญาต", reason: "ละเมิดทั้งสิทธิในชื่อเสียง/ภาพลักษณ์ตามมาตรา 32 และอาจเข้าข่ายหลอกลวงผู้บริโภคว่าดาราคนดังกล่าวรับรองสินค้าจริง", twist: "แม้จะติดคำเตือนว่า \"สร้างด้วย AI ไม่ใช่คลิปจริง\" ตัวเล็ก ๆ ไว้มุมจอ ก็ยังมีความเสี่ยงสูงที่ผู้ชมจำนวนมากจะไม่ทันสังเกตเห็นและเข้าใจผิด โดยเฉพาะเมื่อเจ้าของภาพลักษณ์ไม่ได้ยินยอมตั้งแต่ต้น" },
-  { no: 11, zone: "ok", text: "รายการข่าวติดต่อขออนุญาตเจ้าของคลิป TikTok ก่อนนำมาออกอากาศ พร้อมให้เครดิตเจ้าของคลิปอย่างชัดเจน", reason: "ปฏิบัติตามหลักการขอความยินยอมและให้เครดิตอย่างถูกต้อง แม้คลิปจะตั้งเป็น Public ก็ตาม", twist: "การตั้งโพสต์เป็น Public ไม่ได้แปลว่าอนุญาตให้สื่อนำไปใช้ซ้ำในเชิงพาณิชย์ได้โดยอัตโนมัติเสมอไป — การขออนุญาตเพิ่มเติมจึงเป็นแนวปฏิบัติที่ถูกต้องและควรเป็นมาตรฐาน" },
-  { no: 12, zone: "forbidden", text: "เพจเผยแพร่ภาพแชตเรื่องชู้สาวของนักแสดง โดยอ้างว่า \"เป็นเรื่องจริง จึงโพสต์ได้\"", reason: "ความจริงของข้อมูลไม่ใช่ข้อยกเว้นอัตโนมัติสำหรับการละเมิดความเป็นส่วนตัวตามมาตรา 32 โดยเฉพาะเรื่องส่วนตัวที่ไม่เกี่ยวข้องกับประโยชน์สาธารณะ", twist: "หากนักแสดงคนดังกล่าวเคยใช้ภาพลักษณ์ \"ครอบครัวสมบูรณ์แบบ\" มาหากินเชิงพาณิชย์อย่างเป็นระบบ อาจมีข้อถกเถียงเรื่องประโยชน์สาธารณะบางส่วน แต่โดยหลักทั่วไปเรื่องชู้สาวส่วนตัวยังคงไม่เข้าข่ายประโยชน์สาธารณะที่ชอบธรรม" },
-];
-
-// ---- Stage 4: Boss — Colliding Rights (per track) ----
+// ---- Stage 3: Boss — Colliding Rights (per track) ----
 const BOSS_SCENARIOS = {
   df: {
     code: "BOSS · DF", title: "สารคดีเปิดโปงด้วยภาพจากกล้องลับ",
@@ -294,15 +358,15 @@ const BADGES = [
   { key: "hr", icon: "🌍", name: "นักสิทธิมนุษยชนสากล", desc: "จับคู่ถูกต้องครบทุกคู่ใน Stage 0 ตั้งแต่ครั้งแรก" },
   { key: "quiz", icon: "🔍", name: "นักสืบสิทธิพื้นฐาน", desc: "ทำ Stage 1 ได้ 10 ข้อขึ้นไปจาก 12 ข้อ" },
   { key: "media", icon: "📡", name: "ผู้พิทักษ์เสรีภาพสื่อ / โปรดิวเซอร์สายจริยธรรม / นักการตลาดผู้ตระหนักสิทธิผู้บริโภค", desc: "เลือกทางที่ดีที่สุดในสถานการณ์เสรีภาพสื่อของสายตนเอง (สถานการณ์ที่ 4)" },
-  { key: "critical", icon: "🧠", name: "นักคิดผู้ไม่ด่วนสรุป", desc: "เปิดการ์ดหักมุมอย่างน้อย 3 ครั้งใน Stage 3" },
-  { key: "mediator", icon: "⚖️", name: "ผู้ไกล่เกลี่ยสิทธิ", desc: "เขียนเหตุผลอย่างละเอียดในภารกิจบอส (Stage 4)" },
-  { key: "full", icon: "🏆", name: "นักสื่อสารผู้เท่าทันสิทธิ", desc: "ผ่านครบทั้ง 5 ด่านของภารกิจ" },
+  { key: "critical", icon: "🧠", name: "นักคิดผู้ไม่ด่วนสรุป", desc: "เปิดคลังความรู้เพื่อตรวจสอบข้อมูลก่อนตอบ ครบทั้ง 3 ด่าน (Quiz / ภารกิจภาคสนาม / ภารกิจบอส)" },
+  { key: "mediator", icon: "⚖️", name: "ผู้ไกล่เกลี่ยสิทธิ", desc: "เขียนเหตุผลอย่างละเอียดในภารกิจบอส (Stage 3)" },
+  { key: "full", icon: "🏆", name: "นักสื่อสารผู้เท่าทันสิทธิ", desc: "ผ่านครบทั้ง 4 ด่านของภารกิจ" },
 ];
 
 // ---- Debrief questions ----
 const DEBRIEF_QUESTIONS = [
   "สถานการณ์ใดที่ทำให้รู้สึกลังเลใจมากที่สุดในการตัดสินใจ เพราะเหตุใด",
-  "มีตัวเลือกใดที่ตอนแรกคิดว่าถูกต้อง แต่หลังเห็นการ์ดหักมุมหรือเหตุผลเฉลยแล้วเปลี่ยนใจหรือไม่",
+  "มีตัวเลือกใดที่ตอนแรกคิดว่าถูกต้อง แต่หลังเห็นเหตุผลเฉลยเชิงกฎหมายแล้วเปลี่ยนใจหรือไม่",
   "ระหว่างเสรีภาพในการสื่อสารกับสิทธิของบุคคลอื่น คิดว่าสังคมไทยปัจจุบันให้น้ำหนักกับฝั่งใดมากกว่ากัน เพราะเหตุใด",
   "มีข่าวหรือเหตุการณ์จริงในช่วงที่ผ่านมาที่คล้ายกับสถานการณ์ในเกมหรือไม่ คิดเห็นอย่างไรกับกรณีนั้น",
   "หากวันหนึ่งต้องเผชิญสถานการณ์แบบในเกมจริงในที่ทำงาน จะนำบทเรียนจากวันนี้ไปใช้อย่างไร",
@@ -341,11 +405,11 @@ let state = {
   studentId: "", firstName: "", lastName: "", consent: false,
   track: null,
   rightsPoints: 0, insightPoints: 0,
+  library: { visitedIntro: {}, bonusGiven: { stage1: false, stage2: false, stage3: false } },
   stage0: { index: 0, step: "article", articleChoice: null, done: false, allCorrectFirstTry: true, log: [] },
   stage1: { index: 0, answers: [], score: 0 },
   stage2: { index: 0, answers: [] },
-  stage3: { placements: {}, reasons: {}, twistOpened: {}, twistOpenedCount: 0 },
-  stage4: { sliderValue: 50, reason: "", submitted: false },
+  stage3: { sliderValue: 50, reason: "", submitted: false },
   badges: [],
 };
 
@@ -364,15 +428,14 @@ function saveState() {
    ========================================================= */
 
 const $ = (id) => document.getElementById(id);
-const screens = ["start", "stage0", "stage1", "stage2", "stage3", "stage4", "stage5"];
+const screens = ["start", "library", "stage0", "stage1", "stage2", "stage3", "stage4"];
 
 function showScreen(name) {
   state.screen = name;
   screens.forEach((s) => { $("screen-" + s).hidden = s !== name; });
-  $("hud").hidden = name === "start";
-  if (name !== "start") {
-    const stageNum = name.replace("stage", "");
-    $("hudStage").textContent = stageNum;
+  $("hud").hidden = name === "start" || name === "library";
+  if (name.startsWith("stage")) {
+    $("hudStage").textContent = name.replace("stage", "");
   }
   updateHud();
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -425,9 +488,92 @@ $("btnStart").addEventListener("click", () => {
   $("infoError").hidden = true;
   state.studentId = sid; state.firstName = fn; state.lastName = ln;
   state.consent = $("consentCheck").checked;
+  showScreen("library");
+  renderLibraryIntro();
+});
+
+/* =========================================================
+   3.5 KNOWLEDGE LIBRARY — reference content shown before gameplay,
+   and reachable anytime via the "📚 คลังความรู้" button in the HUD
+   ========================================================= */
+
+const KNOWLEDGE_CATEGORY_ORDER = ["udhr", "iccpr", "constitution", "media-df", "media-imc", "media-bc"];
+
+function defaultLibraryCategory() {
+  if (state.track === "df") return "media-df";
+  if (state.track === "imc") return "media-imc";
+  if (state.track === "bc") return "media-bc";
+  return "udhr";
+}
+
+function buildLibraryNav(navId, contentId) {
+  const nav = $(navId);
+  nav.innerHTML = "";
+  KNOWLEDGE_CATEGORY_ORDER.forEach((key) => {
+    const cat = KNOWLEDGE_BASE[key];
+    const b = document.createElement("button");
+    b.className = "library-nav-btn";
+    b.dataset.key = key;
+    b.innerHTML = `<span class="library-nav-icon">${cat.icon}</span><span>${cat.label}</span>`;
+    b.addEventListener("click", () => renderKnowledgeCategory(navId, contentId, key));
+    nav.appendChild(b);
+  });
+}
+
+function renderKnowledgeCategory(navId, contentId, key) {
+  const nav = $(navId);
+  const content = $(contentId);
+  [...nav.children].forEach((b) => b.classList.toggle("active", b.dataset.key === key));
+  const cat = KNOWLEDGE_BASE[key];
+  content.innerHTML =
+    `<div class="library-cat-head"><span class="library-cat-icon">${cat.icon}</span><h4>${cat.label}</h4></div>` +
+    `<p class="library-intro-text">${cat.intro}</p>` +
+    cat.sections.map((s) => `<div class="library-section"><h5>${s.h}</h5><p>${s.p}</p></div>`).join("");
+  content.scrollTop = 0;
+  if (navId === "libraryNavIntro") state.library.visitedIntro[key] = true;
+}
+
+function renderLibraryIntro() {
+  buildLibraryNav("libraryNavIntro", "libraryContentIntro");
+  renderKnowledgeCategory("libraryNavIntro", "libraryContentIntro", defaultLibraryCategory());
+}
+
+$("btnLibraryContinue").addEventListener("click", () => {
   showScreen("stage0");
   renderFoundation(0);
 });
+
+function openLibraryModal() {
+  const stageKey = state.screen;
+  buildLibraryNav("libraryNavModal", "libraryContentModal");
+  renderKnowledgeCategory("libraryNavModal", "libraryContentModal", defaultLibraryCategory());
+  const bonusNote = $("libraryBonusNote");
+  if (["stage1", "stage2", "stage3"].includes(stageKey) && !state.library.bonusGiven[stageKey]) {
+    state.library.bonusGiven[stageKey] = true;
+    state.insightPoints += 12;
+    updateHud();
+    if (
+      state.library.bonusGiven.stage1 &&
+      state.library.bonusGiven.stage2 &&
+      state.library.bonusGiven.stage3 &&
+      !state.badges.includes("critical")
+    ) {
+      state.badges.push("critical");
+    }
+    bonusNote.hidden = false;
+    saveState();
+  } else {
+    bonusNote.hidden = true;
+  }
+  $("libraryModal").hidden = false;
+}
+
+function closeLibraryModal() {
+  $("libraryModal").hidden = true;
+}
+
+$("btnOpenLibrary").addEventListener("click", openLibraryModal);
+$("btnCloseLibrary").addEventListener("click", closeLibraryModal);
 
 /* =========================================================
    4. STAGE 0 — HUMAN RIGHTS FOUNDATION
@@ -680,159 +826,12 @@ $("btnScenarioNext").addEventListener("click", () => {
   else {
     $("stage2Fill").style.width = "100%";
     showScreen("stage3");
-    initSortingChamber();
+    renderBoss();
   }
 });
 
 /* =========================================================
-   7. STAGE 3 — SORTING CHAMBER (pointer drag & drop)
-   ========================================================= */
-
-const sortingPool = $("sortingPool");
-const dragGhost = $("dragGhost");
-const sortingZones = { ok: $("zone-ok"), unsure: $("zone-unsure"), forbidden: $("zone-forbidden") };
-let sortingInitialized = false;
-
-function initSortingChamber() {
-  if (sortingInitialized) { updateSortingProgress(); return; }
-  sortingInitialized = true;
-  $("sortingTotal").textContent = SORTING_CASES.length;
-
-  SORTING_CASES.forEach((c) => {
-    const el = document.createElement("div");
-    el.className = "bubble";
-    el.dataset.caseNo = c.no;
-    el.innerHTML = `<span class="bubble-no">${String(c.no).padStart(2, "0")}</span><span class="bubble-text">${c.text}</span>`;
-    attachSortingHandlers(el);
-    const savedZone = state.stage3.placements[c.no];
-    if (savedZone && sortingZones[savedZone]) {
-      el.classList.add("placed");
-      sortingZones[savedZone].appendChild(el);
-    } else {
-      sortingPool.appendChild(el);
-    }
-  });
-  updateSortingProgress();
-}
-
-function updateSortingProgress() {
-  const placed = Object.keys(state.stage3.placements).length;
-  $("sortingCount").textContent = placed;
-  $("btnStage3Continue").disabled = placed < SORTING_CASES.length;
-}
-
-function hideGhost() { dragGhost.style.setProperty("display", "none", "important"); }
-function showGhost() { dragGhost.style.setProperty("display", "flex", "important"); }
-hideGhost();
-
-let dragCtx = null; // { el, startX, startY, dragging, caseNo }
-
-function attachSortingHandlers(el) {
-  el.addEventListener("pointerdown", (e) => {
-    if (e.button !== undefined && e.button !== 0) return;
-    dragCtx = { el, startX: e.clientX, startY: e.clientY, dragging: false, caseNo: el.dataset.caseNo };
-    window.addEventListener("pointermove", onSortMove);
-    window.addEventListener("pointerup", onSortUp);
-  });
-}
-
-function onSortMove(e) {
-  if (!dragCtx) return;
-  const dx = e.clientX - dragCtx.startX;
-  const dy = e.clientY - dragCtx.startY;
-  if (!dragCtx.dragging && Math.hypot(dx, dy) > 6) {
-    dragCtx.dragging = true;
-    dragCtx.el.classList.add("dragging-source");
-    dragGhost.innerHTML = dragCtx.el.innerHTML;
-    showGhost();
-  }
-  if (dragCtx.dragging) {
-    dragGhost.style.left = e.clientX + "px";
-    dragGhost.style.top = e.clientY + "px";
-    Object.values(sortingZones).forEach((z) => z.parentElement.classList.remove("drag-over"));
-    const under = document.elementFromPoint(e.clientX, e.clientY);
-    const box = under && under.closest(".drop-box");
-    if (box) box.classList.add("drag-over");
-  }
-}
-
-function onSortUp(e) {
-  window.removeEventListener("pointermove", onSortMove);
-  window.removeEventListener("pointerup", onSortUp);
-  if (!dragCtx) return;
-  const ctx = dragCtx; dragCtx = null;
-  Object.values(sortingZones).forEach((z) => z.parentElement.classList.remove("drag-over"));
-
-  if (!ctx.dragging) {
-    openSortingDetail(ctx.caseNo);
-    return;
-  }
-  ctx.el.classList.remove("dragging-source");
-  hideGhost();
-  const under = document.elementFromPoint(e.clientX, e.clientY);
-  const box = under && under.closest(".drop-box");
-  if (box) {
-    const zoneKey = box.dataset.zone;
-    ctx.el.classList.add("placed");
-    sortingZones[zoneKey].appendChild(ctx.el);
-    state.stage3.placements[ctx.caseNo] = zoneKey;
-    updateSortingProgress();
-    saveState();
-    openSortingDetail(ctx.caseNo);
-  }
-}
-
-let currentSortingCase = null;
-function openSortingDetail(caseNo) {
-  const c = SORTING_CASES.find((x) => String(x.no) === String(caseNo));
-  if (!c) return;
-  currentSortingCase = c;
-  $("sortingDetail").hidden = false;
-  $("sortingDetailTitle").textContent = `CASE ${String(c.no).padStart(2, "0")}`;
-  $("sortingDetailText").textContent = c.text;
-  $("sortingDetailReason").value = state.stage3.reasons[c.no] || "";
-  $("twistCard").hidden = true;
-  $("twistCard").textContent = "";
-  $("sortingDetail").scrollIntoView({ behavior: "smooth", block: "center" });
-}
-
-$("btnCloseSortingDetail").addEventListener("click", () => { $("sortingDetail").hidden = true; currentSortingCase = null; });
-
-$("sortingDetailReason").addEventListener("input", (e) => {
-  if (!currentSortingCase) return;
-  const val = e.target.value;
-  const prevLen = (state.stage3.reasons[currentSortingCase.no] || "").length;
-  state.stage3.reasons[currentSortingCase.no] = val;
-  if (prevLen < 10 && val.trim().length >= 10) state.insightPoints += 3;
-  updateHud();
-  saveState();
-});
-
-$("btnTwist").addEventListener("click", () => {
-  if (!currentSortingCase) return;
-  const el = $("twistCard");
-  el.hidden = false;
-  el.innerHTML = `<strong>🔀 มุมมองเพิ่มเติม:</strong><br>${currentSortingCase.twist}<br><br><strong>เหตุผลของหมวดที่ถูกต้อง:</strong><br>${currentSortingCase.reason}`;
-  if (!state.stage3.twistOpened[currentSortingCase.no]) {
-    state.stage3.twistOpened[currentSortingCase.no] = true;
-    state.stage3.twistOpenedCount++;
-    if (state.stage3.twistOpenedCount >= 3 && !state.badges.includes("critical")) state.badges.push("critical");
-  }
-  saveState();
-});
-
-$("btnStage3Continue").addEventListener("click", () => {
-  // score correctness of placements
-  let correctCount = 0;
-  SORTING_CASES.forEach((c) => { if (state.stage3.placements[c.no] === c.zone) correctCount++; });
-  state.rightsPoints += correctCount * 5;
-  updateHud();
-  showScreen("stage4");
-  renderBoss();
-});
-
-/* =========================================================
-   8. STAGE 4 — BOSS: COLLIDING RIGHTS
+   7. STAGE 3 — BOSS: COLLIDING RIGHTS
    ========================================================= */
 
 function renderBoss() {
@@ -851,9 +850,13 @@ function renderBoss() {
 $("btnBossSubmit").addEventListener("click", () => {
   const b = BOSS_SCENARIOS[state.track];
   const reason = $("bossReason").value.trim();
-  state.stage4 = { sliderValue: Number($("bossSlider").value), reason, submitted: true };
-  const pts = insightFromText(reason, 30) + (reason.length >= 100 ? 10 : 0);
-  state.insightPoints += pts;
+  state.stage3 = { sliderValue: Number($("bossSlider").value), reason, submitted: true };
+  const insightPts = insightFromText(reason, 30) + (reason.length >= 100 ? 10 : 0);
+  // ภารกิจบอสเป็นด่านสุดท้าย จึงให้ RightsPoints ตามคุณภาพของเหตุผลด้วย (แทนคะแนนที่เคยได้จาก
+  // ห้องแยกแยะซึ่งถูกตัดออกไปแล้ว) เพื่อรักษาสมดุลคะแนนรวมของทั้งภารกิจ
+  const rightsBonus = Math.min(60, insightFromText(reason, 30) * 3 + (reason.length >= 100 ? 15 : 0));
+  state.insightPoints += insightPts;
+  state.rightsPoints += rightsBonus;
   if (reason.length >= 100 && !state.badges.includes("mediator")) state.badges.push("mediator");
   updateHud();
 
@@ -867,12 +870,12 @@ $("btnBossSubmit").addEventListener("click", () => {
 
 $("btnBossContinue").addEventListener("click", () => {
   if (!state.badges.includes("full")) state.badges.push("full");
-  showScreen("stage5");
+  showScreen("stage4");
   renderDebrief();
 });
 
 /* =========================================================
-   9. STAGE 5 — DEBRIEF / CERTIFICATE / EXPORT
+   8. STAGE 4 — DEBRIEF / CERTIFICATE / EXPORT
    ========================================================= */
 
 function renderDebrief() {
@@ -951,16 +954,9 @@ $("btnDownloadXlsx").addEventListener("click", () => {
   });
   XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s2rows), "Stage2 ภารกิจภาคสนาม");
 
-  const s3rows = SORTING_CASES.map((c) => ({
-    "ข้อที่": c.no, "สถานการณ์": c.text,
-    "หมวดที่จัด": state.stage3.placements[c.no] || "ยังไม่จัด",
-    "หมวดที่ถูกต้อง": c.zone, "เหตุผลของนักศึกษา": state.stage3.reasons[c.no] || "",
-  }));
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s3rows), "Stage3 ห้องแยกแยะ");
-
   const b = BOSS_SCENARIOS[state.track];
-  const s4rows = [{ "สถานการณ์": b.title, "ตำแหน่งมาตรวัด (0=เสรีภาพเต็มที่ 100=คุ้มครองสิทธิผู้อื่น)": state.stage4.sliderValue, "เหตุผลของนักศึกษา": state.stage4.reason }];
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s4rows), "Stage4 ภารกิจบอส");
+  const s3rows = [{ "สถานการณ์": b.title, "ตำแหน่งมาตรวัด (0=เสรีภาพเต็มที่ 100=คุ้มครองสิทธิผู้อื่น)": state.stage3.sliderValue, "เหตุผลของนักศึกษา": state.stage3.reason }];
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s3rows), "Stage3 ภารกิจบอส");
 
   const safe = (s) => (s || "").replace(/[^\p{L}\p{N}_-]+/gu, "");
   XLSX.writeFile(wb, `${safe(state.studentId)}_${safe(state.firstName)}${safe(state.lastName)}_STUDIO2560.xlsx`);
@@ -977,7 +973,7 @@ function submitToGoogleSheet() {
     studentId: state.studentId, firstName: state.firstName, lastName: state.lastName,
     track: state.track, rightsPoints: state.rightsPoints, insightPoints: state.insightPoints,
     total: state.rightsPoints + state.insightPoints,
-    badges: state.badges, bossReason: state.stage4.reason,
+    badges: state.badges, bossReason: state.stage3.reason,
   };
   $("gsForm").action = GOOGLE_SCRIPT_URL;
   $("gsPayload").value = JSON.stringify(payload);
@@ -1027,19 +1023,19 @@ $("btnResetAll").addEventListener("click", () => {
 });
 
 /* =========================================================
-   10. INIT
+   9. INIT
    ========================================================= */
 
 function init() {
   loadState();
   if (state.studentId && state.track && state.screen !== "start") {
     // resume where left off (best-effort — re-render current stage entry point)
+    if (state.screen === "library") { showScreen("library"); renderLibraryIntro(); return; }
     if (state.screen === "stage0" && !state.stage0.done) { showScreen("stage0"); renderFoundation(state.stage0.index || 0); return; }
     if (state.screen === "stage1") { showScreen("stage1"); renderQuiz(state.stage1.index || 0); return; }
     if (state.screen === "stage2") { showScreen("stage2"); renderScenario(state.stage2.index || 0); return; }
-    if (state.screen === "stage3") { showScreen("stage3"); initSortingChamber(); return; }
-    if (state.screen === "stage4") { showScreen("stage4"); renderBoss(); return; }
-    if (state.screen === "stage5") { showScreen("stage5"); renderDebrief(); return; }
+    if (state.screen === "stage3") { showScreen("stage3"); renderBoss(); return; }
+    if (state.screen === "stage4") { showScreen("stage4"); renderDebrief(); return; }
   }
   showScreen("start");
 }

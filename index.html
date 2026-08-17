@@ -19,7 +19,7 @@
   <div class="title-block">
     <span class="tag">CA306 · STUDIO 2560</span>
     <h1>ภารกิจนักสื่อสารผู้<span class="accent">เท่าทันสิทธิ</span></h1>
-    <p class="subtitle">สิทธิมนุษยชน · สิทธิและเสรีภาพตามรัฐธรรมนูญ 2560 · เกม Web-based 90 นาที</p>
+    <p class="subtitle">สิทธิมนุษยชน · สิทธิและเสรีภาพตามรัฐธรรมนูญ 2560 · เกม Web-based ~85 นาที</p>
   </div>
   <div class="hud" id="hud" hidden>
     <div class="hud-chip">
@@ -31,6 +31,7 @@
     <div class="hud-chip hud-insight">
       <span id="hudInsight">0</span><small>InsightPoints</small>
     </div>
+    <button class="hud-library-btn" id="btnOpenLibrary">📚 คลังความรู้</button>
   </div>
 </header>
 
@@ -41,7 +42,7 @@
     <div class="start-hero">
       <span class="tag">วันแรกที่ Studio 2560</span>
       <h2>ยินดีต้อนรับพนักงานฝึกหัด</h2>
-      <p class="lead">คุณกำลังจะเริ่มกะทำงานแรกที่ Studio 2560 บริษัทสื่อจำลองที่ทำงานครอบคลุมภาพยนตร์ การตลาด และการกระจายเสียง/สตรีมมิ่ง ผ่านภารกิจ 5 ด่านเพื่อรับ "ใบอนุญาตนักสื่อสารผู้เท่าทันสิทธิ" ใช้เวลาทั้งหมดประมาณ 90 นาที</p>
+      <p class="lead">คุณกำลังจะเริ่มกะทำงานแรกที่ Studio 2560 บริษัทสื่อจำลองที่ทำงานครอบคลุมภาพยนตร์ การตลาด และการกระจายเสียง/สตรีมมิ่ง เริ่มต้นด้วยการเข้า "คลังความรู้" เพื่อปูพื้นฐานสิทธิมนุษยชนและสิทธิเสรีภาพ จากนั้นผ่านภารกิจ 4 ด่านเพื่อรับ "ใบอนุญาตนักสื่อสารผู้เท่าทันสิทธิ" ใช้เวลาทั้งหมดประมาณ 85 นาที</p>
     </div>
 
     <div class="field-row">
@@ -68,6 +69,20 @@
     </label>
 
     <button class="btn-primary" id="btnStart">เริ่มกะทำงาน →</button>
+  </section>
+
+  <!-- ============ SCREEN: KNOWLEDGE LIBRARY (mandatory intro) ============ -->
+  <section class="panel screen screen-wide" id="screen-library" hidden>
+    <div class="stage-head">
+      <span class="tag">ก่อนเริ่มภารกิจ · คลังความรู้</span>
+      <h2>คลังความรู้: สิทธิมนุษยชนและสิทธิเสรีภาพ</h2>
+      <p class="lead">อ่านหลักการพื้นฐานเหล่านี้ก่อนเริ่มภารกิจ — เลือกหมวดหมู่ทางด้านซ้าย แล้วเลื่อนอ่านเนื้อหาทางด้านขวา คุณสามารถกลับมาเปิดคลังความรู้นี้ได้ตลอดระหว่างเล่นเกมผ่านปุ่ม "📚 คลังความรู้" ที่มุมบนขวา และการเข้ามาตรวจสอบก่อนตอบคำถามยังได้ InsightPoints เพิ่มด้วย</p>
+    </div>
+    <div class="library-layout">
+      <nav class="library-nav" id="libraryNavIntro"></nav>
+      <div class="library-content" id="libraryContentIntro"></div>
+    </div>
+    <button class="btn-primary" id="btnLibraryContinue">เข้าใจแล้ว เริ่มภารกิจ →</button>
   </section>
 
   <!-- ============ SCREEN: STAGE 0 — FOUNDATION ============ -->
@@ -172,59 +187,12 @@
     </div>
   </section>
 
-  <!-- ============ SCREEN: STAGE 3 — SORTING CHAMBER ============ -->
-  <section class="panel screen screen-wide" id="screen-stage3" hidden>
+  <!-- ============ SCREEN: STAGE 3 — BOSS ============ -->
+  <section class="panel screen" id="screen-stage3" hidden>
     <div class="stage-head">
-      <span class="tag">Stage 3 · 15 นาที</span>
-      <h2>ห้องแยกแยะ (Sorting Chamber)</h2>
-      <p class="lead">ลากกล่องสถานการณ์ไปวางในหมวดคำตอบที่คุณคิดว่าใช่ ใส่เหตุผลสั้น ๆ แล้วดู "การ์ดหักมุม" ก่อนตัดสินใจสุดท้าย</p>
-    </div>
-    <div class="progress-chip-inline"><span id="sortingCount">0</span> / <span id="sortingTotal">12</span> จัดแล้ว</div>
-
-    <div class="layout sorting-layout">
-      <section class="panel pool-panel">
-        <h3 class="panel-title">📦 สถานการณ์ทั้งหมด</h3>
-        <p class="panel-hint">คลิกค้าง (หรือแตะค้างบนมือถือ) แล้วลากไปวางในกล่องคำตอบด้านขวา — ลากสลับกล่องได้ตลอด</p>
-        <div class="bubble-pool" id="sortingPool"></div>
-      </section>
-
-      <section class="panel boxes-area">
-        <div class="boxes-panel" id="sortingBoxes">
-          <div class="drop-box box-green" data-zone="ok">
-            <div class="box-label">✅ ทำได้</div>
-            <div class="box-content" id="zone-ok" data-placeholder="ยังไม่มีข้อวางไว้"></div>
-          </div>
-          <div class="drop-box box-yellow" data-zone="unsure">
-            <div class="box-label">⚠️ ไม่แน่ใจ / ขอข้อมูลเพิ่ม</div>
-            <div class="box-content" id="zone-unsure" data-placeholder="ยังไม่มีข้อวางไว้"></div>
-          </div>
-          <div class="drop-box box-red" data-zone="forbidden">
-            <div class="box-label">⛔ ทำไม่ได้</div>
-            <div class="box-content" id="zone-forbidden" data-placeholder="ยังไม่มีข้อวางไว้"></div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="sorting-detail" id="sortingDetail" hidden>
-      <button class="close-x" id="btnCloseSortingDetail">✕</button>
-      <h4 id="sortingDetailTitle"></h4>
-      <p id="sortingDetailText"></p>
-      <label>เหตุผลของคุณ</label>
-      <textarea id="sortingDetailReason" rows="2" placeholder="ทำไมคุณถึงจัดข้อนี้ไว้หมวดนี้..."></textarea>
-      <button class="btn-secondary" id="btnTwist">🔀 ดูมุมมองเพิ่มเติม (การ์ดหักมุม)</button>
-      <div class="twist-card" id="twistCard" hidden></div>
-    </div>
-
-    <button class="btn-primary" id="btnStage3Continue">ไปยัง Stage 4 →</button>
-  </section>
-
-  <!-- ============ SCREEN: STAGE 4 — BOSS ============ -->
-  <section class="panel screen" id="screen-stage4" hidden>
-    <div class="stage-head">
-      <span class="tag">Stage 4 · 10 นาที · ภารกิจบอส</span>
+      <span class="tag">Stage 3 · 10 นาที · ภารกิจบอส</span>
       <h2>สองสิทธิที่ชนกัน (Colliding Rights)</h2>
-      <p class="lead">สถานการณ์นี้ไม่มีคำตอบสมบูรณ์แบบ — ให้เหตุผลที่ดีที่สุดสำคัญกว่าตำแหน่งบนมาตรวัด</p>
+      <p class="lead">สถานการณ์นี้ไม่มีคำตอบสมบูรณ์แบบ — ให้เหตุผลที่ดีที่สุดสำคัญกว่าตำแหน่งบนมาตรวัด เหตุผลที่เขียนดียังมีผลต่อ RightsPoints ด้วย</p>
     </div>
 
     <div class="scenario-card boss-card">
@@ -253,14 +221,14 @@
       </div>
 
       <button class="btn-primary" id="btnBossSubmit">ส่งคำตัดสิน</button>
-      <button class="btn-primary" id="btnBossContinue" hidden>ไปยัง Stage 5 →</button>
+      <button class="btn-primary" id="btnBossContinue" hidden>ไปยัง Stage 4 →</button>
     </div>
   </section>
 
-  <!-- ============ SCREEN: STAGE 5 — DEBRIEF ============ -->
-  <section class="panel screen screen-wide" id="screen-stage5" hidden>
+  <!-- ============ SCREEN: STAGE 4 — DEBRIEF ============ -->
+  <section class="panel screen screen-wide" id="screen-stage4" hidden>
     <div class="stage-head celebrate">
-      <span class="tag">Stage 5 · สรุปภารกิจ</span>
+      <span class="tag">Stage 4 · สรุปภารกิจ</span>
       <h2>🎉 ผ่านภารกิจสำเร็จ!</h2>
       <p class="lead" id="debriefName"></p>
     </div>
@@ -300,8 +268,18 @@
 
 </main>
 
-<!-- Drag ghost element for Stage 3 -->
-<div class="drag-ghost" id="dragGhost" hidden></div>
+<!-- Knowledge Library modal — reachable anytime via the HUD "📚 คลังความรู้" button -->
+<div class="modal-backdrop" id="libraryModal" hidden>
+  <div class="modal-panel">
+    <button class="close-x" id="btnCloseLibrary">✕</button>
+    <h3>📚 คลังความรู้</h3>
+    <p class="library-bonus-note" id="libraryBonusNote" hidden>✨ ได้ 12 InsightPoints จากการค้นคว้าก่อนตอบในด่านนี้!</p>
+    <div class="library-layout">
+      <nav class="library-nav" id="libraryNavModal"></nav>
+      <div class="library-content" id="libraryContentModal"></div>
+    </div>
+  </div>
+</div>
 
 <!-- Hidden form for Google Apps Script submission (avoids CORS) -->
 <form id="gsForm" action="" method="POST" target="gsFrame" style="display:none;">
