@@ -430,7 +430,20 @@ function saveState() {
 const $ = (id) => document.getElementById(id);
 const screens = ["start", "library", "stage0", "stage1", "stage2", "stage3", "stage4"];
 
-function showScreen(name) {
+// ย้อนกลับ: สแต็กของหน้าจอที่ผ่านมา เก็บไว้เฉพาะในหน่วยความจำ (ไม่บันทึกลง localStorage)
+// เพื่อให้ปุ่ม "← ย้อนกลับ" พาไปยังหน้าก่อนหน้าตามลำดับที่ผู้เล่นเดินทางมาจริง
+const navHistory = [];
+
+function updateBackButton() {
+  const btn = $("btnBackHud");
+  if (btn) btn.disabled = navHistory.length === 0;
+}
+
+function showScreen(name, opts) {
+  opts = opts || {};
+  if (!opts.skipHistory && state.screen && state.screen !== name) {
+    navHistory.push(state.screen);
+  }
   state.screen = name;
   screens.forEach((s) => { $("screen-" + s).hidden = s !== name; });
   $("hud").hidden = name === "start" || name === "library";
@@ -438,9 +451,29 @@ function showScreen(name) {
     $("hudStage").textContent = name.replace("stage", "");
   }
   updateHud();
+  updateBackButton();
   window.scrollTo({ top: 0, behavior: "smooth" });
   saveState();
 }
+
+// เรียกฟังก์ชัน render ที่ตรงกับหน้าจอนั้น ๆ ใหม่ (ใช้ทั้งตอนย้อนกลับและตอน resume หลังรีเฟรช)
+function renderScreenEntry(name) {
+  if (name === "library") { renderLibraryIntro(); return; }
+  if (name === "stage0") { renderFoundation(state.stage0.index || 0); return; }
+  if (name === "stage1") { renderQuiz(state.stage1.index || 0); return; }
+  if (name === "stage2") { renderScenario(state.stage2.index || 0); return; }
+  if (name === "stage3") { renderBoss(); return; }
+  if (name === "stage4") { renderDebrief(); return; }
+}
+
+function goBack() {
+  if (!navHistory.length) return;
+  const prev = navHistory.pop();
+  showScreen(prev, { skipHistory: true });
+  renderScreenEntry(prev);
+}
+
+$("btnBackHud").addEventListener("click", goBack);
 
 function updateHud() {
   $("hudRights").textContent = state.rightsPoints;
@@ -1016,11 +1049,14 @@ $("btnMsForms").addEventListener("click", () => {
   window.open(buildMsFormsPrefillUrl(), "_blank", "noopener");
 });
 
-$("btnResetAll").addEventListener("click", () => {
+function resetAll() {
   if (!confirm("ต้องการเริ่มกิจกรรมใหม่ทั้งหมดใช่หรือไม่? ข้อมูลเดิมจะถูกลบ")) return;
   localStorage.removeItem(STORAGE_KEY);
   location.reload();
-});
+}
+
+$("btnResetAll").addEventListener("click", resetAll);
+$("btnResetHud").addEventListener("click", resetAll);
 
 /* =========================================================
    9. INIT

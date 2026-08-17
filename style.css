@@ -447,6 +447,21 @@ input[type="text"]:focus, textarea:focus {
 
 .close-x { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--ink-soft); font-size: 1.1rem; cursor: pointer; }
 
+.hud-back-btn {
+  font-family: 'Kanit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: rgba(123, 47, 247, 0.12);
+  border: 1px solid rgba(123, 47, 247, 0.4);
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+.hud-back-btn:hover { box-shadow: 0 0 16px rgba(123, 47, 247, 0.4); transform: translateY(-1px); }
+.hud-back-btn:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; transform: none; }
+
 /* Knowledge Library (intro screen + persistent modal) */
 .hud-library-btn {
   font-family: 'Kanit', sans-serif;
@@ -461,6 +476,20 @@ input[type="text"]:focus, textarea:focus {
   transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 .hud-library-btn:hover { box-shadow: 0 0 16px rgba(0, 240, 255, 0.4); transform: translateY(-1px); }
+
+.hud-reset-btn {
+  font-family: 'Kanit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: rgba(255, 77, 109, 0.1);
+  border: 1px solid rgba(255, 77, 109, 0.4);
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.hud-reset-btn:hover { box-shadow: 0 0 16px rgba(255, 77, 109, 0.4); transform: translateY(-1px); }
 
 .library-layout {
   display: grid;
