@@ -264,17 +264,6 @@ input[type="text"]:focus, textarea:focus {
   background: rgba(0, 240, 255, 0.08);
 }
 
-.consent-row {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  font-size: 0.78rem;
-  color: var(--ink-soft);
-  margin: 14px 0 6px;
-  line-height: 1.5;
-}
-.consent-row input { margin-top: 3px; }
-
 /* Progress */
 .progress-bar {
   background: rgba(255,255,255,0.08);
@@ -505,50 +494,66 @@ input[type="text"]:focus, textarea:focus {
 @media (max-width: 900px) {
   .game-layout { grid-template-columns: 1fr; }
   .library-sidebar { position: static; max-height: none; }
-  .library-sidebar .library-content { max-height: 320px; }
+  .library-nav { max-height: 420px; }
 }
 
-.library-nav { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+/* คลังความรู้แบบ accordion: คลิกหัวข้อแล้วเนื้อหาเปิดเป็น dropdown ลงมาใต้หัวข้อนั้นทันที */
+.library-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.library-item {
+  border-radius: 14px;
+  background: rgba(6, 10, 20, 0.45);
+  border: 1px solid var(--panel-border);
+  overflow: hidden;
+  flex-shrink: 0;
+}
 .library-nav-btn {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
   text-align: left;
   padding: 12px 14px;
-  border-radius: 14px;
-  background: rgba(6, 10, 20, 0.45);
-  border: 1px solid var(--panel-border);
+  background: none;
+  border: none;
   color: var(--ink-soft);
   font-family: 'Kanit', sans-serif;
   font-size: 0.82rem;
   line-height: 1.4;
   cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  transition: color 0.15s ease, background 0.15s ease;
 }
-.library-nav-btn:hover { border-color: rgba(0,240,255,0.5); color: var(--ink); }
+.library-nav-btn:hover { color: var(--ink); background: rgba(0,240,255,0.06); }
 .library-nav-btn.active {
-  border-color: var(--cyan);
   color: var(--ink);
   background: rgba(0,240,255,0.1);
-  box-shadow: 0 0 16px rgba(0,240,255,0.2);
 }
 .library-nav-icon { font-size: 1.1rem; flex-shrink: 0; }
-
-.library-content {
-  background: rgba(6, 10, 20, 0.5);
-  border: 1px solid var(--panel-border);
-  border-radius: 18px;
-  padding: 16px 18px;
-  margin-top: 12px;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
+.library-nav-label { flex: 1; }
+.library-chevron {
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  flex-shrink: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
-.library-cat-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.library-cat-head .library-cat-icon { font-size: 1.6rem; }
-.library-cat-head h4 { margin: 0; font-size: 1.05rem; color: var(--ink); }
-.library-intro-text { font-size: 0.85rem; line-height: 1.7; color: var(--ink-soft); margin: 0 0 16px; }
+.library-nav-btn.active .library-chevron { transform: rotate(180deg); color: var(--cyan); }
+
+.library-dropdown {
+  padding: 2px 14px 16px;
+  border-top: 1px solid var(--panel-border);
+  background: rgba(6, 10, 20, 0.5);
+}
+.library-dropdown[hidden] { display: none; }
+.library-intro-text { font-size: 0.85rem; line-height: 1.7; color: var(--ink-soft); margin: 12px 0 16px; }
 .library-section { margin-bottom: 14px; }
+.library-section:last-child { margin-bottom: 0; }
 .library-section h5 { margin: 0 0 4px; font-size: 0.87rem; color: var(--cyan); }
 .library-section p { margin: 0; font-size: 0.85rem; line-height: 1.7; color: var(--ink); }
 

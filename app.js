@@ -415,7 +415,7 @@ const STORAGE_KEY = "studio2560_state_v1";
 
 let state = {
   screen: "start",
-  studentId: "", firstName: "", lastName: "", consent: false,
+  studentId: "", firstName: "", lastName: "", consent: true,
   track: null,
   rightsPoints: 0, insightPoints: 0,
   library: { bonusGiven: { stage1: false, stage2: false, stage3: false } },
@@ -534,7 +534,6 @@ $("btnStart").addEventListener("click", () => {
   }
   $("infoError").hidden = true;
   state.studentId = sid; state.firstName = fn; state.lastName = ln;
-  state.consent = $("consentCheck").checked;
   initLibrarySidebar();
   showScreen("stage0");
   renderFoundation(0);
