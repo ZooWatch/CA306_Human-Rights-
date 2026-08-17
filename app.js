@@ -505,13 +505,9 @@ function renderScreenEntry(name) {
   if (name === "stage4") { renderDebrief(); return; }
 }
 
-let lastBackClickAt = 0;
 function goBack() {
   const withinStage = canStepBackWithinStage();
   if (!navHistory.length && !withinStage) return;
-  const now = Date.now();
-  if (now - lastBackClickAt < 400) return; // กันคลิกรัว ๆ ที่จะดึงกลับหลายสเต็ปพร้อมกัน
-  lastBackClickAt = now;
 
   if (withinStage) {
     // ถอยกลับทีละข้อ/ทีละสถานการณ์ภายในด่านเดียวกันก่อน แทนที่จะกระโดดไปด่านก่อนหน้าเลย
