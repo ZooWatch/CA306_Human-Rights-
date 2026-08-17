@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>STUDIO 2560 | ภารกิจนักสื่อสารผู้เท่าทันสิทธิ — CA306</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="grid-bg" aria-hidden="true"></div>
+<div class="glow-orb orb-1" aria-hidden="true"></div>
+<div class="glow-orb orb-2" aria-hidden="true"></div>
+<div class="glow-orb orb-3" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="title-block">
+    <span class="tag">CA306 · STUDIO 2560</span>
+    <h1>ภารกิจนักสื่อสารผู้<span class="accent">เท่าทันสิทธิ</span></h1>
+    <p class="subtitle">สิทธิมนุษยชน · สิทธิและเสรีภาพตามรัฐธรรมนูญ 2560 · เกม Web-based 90 นาที</p>
+  </div>
+  <div class="hud" id="hud" hidden>
+    <div class="hud-chip">
+      <span id="hudStage">0</span><small>Stage</small>
+    </div>
+    <div class="hud-chip hud-rights">
+      <span id="hudRights">0</span><small>RightsPoints</small>
+    </div>
+    <div class="hud-chip hud-insight">
+      <span id="hudInsight">0</span><small>InsightPoints</small>
+    </div>
+  </div>
+</header>
+
+<main class="stage-wrap">
+
+  <!-- ============ SCREEN: START ============ -->
+  <section class="panel screen" id="screen-start">
+    <div class="start-hero">
+      <span class="tag">วันแรกที่ Studio 2560</span>
+      <h2>ยินดีต้อนรับพนักงานฝึกหัด</h2>
+      <p class="lead">คุณกำลังจะเริ่มกะทำงานแรกที่ Studio 2560 บริษัทสื่อจำลองที่ทำงานครอบคลุมภาพยนตร์ การตลาด และการกระจายเสียง/สตรีมมิ่ง ผ่านภารกิจ 5 ด่านเพื่อรับ "ใบอนุญาตนักสื่อสารผู้เท่าทันสิทธิ" ใช้เวลาทั้งหมดประมาณ 90 นาที</p>
+    </div>
+
+    <div class="field-row">
+      <label>รหัสนักศึกษา
+        <input type="text" id="studentId" placeholder="เช่น 6512345678" />
+      </label>
+      <label>ชื่อ
+        <input type="text" id="firstName" placeholder="ชื่อจริง" />
+      </label>
+      <label>นามสกุล
+        <input type="text" id="lastName" placeholder="นามสกุล" />
+      </label>
+    </div>
+    <p class="error-text" id="infoError" hidden>กรุณากรอกข้อมูลให้ครบก่อนเริ่มภารกิจ</p>
+
+    <h3 class="section-label">เลือกสายอาชีพของคุณ</h3>
+    <div class="track-grid" id="trackGrid">
+      <!-- injected by JS -->
+    </div>
+
+    <label class="consent-row">
+      <input type="checkbox" id="consentCheck" />
+      <span>ยินยอมให้บันทึกผลคะแนนของฉันเพื่อการเรียนการสอน (ไม่บังคับ — หากไม่ติ๊ก ระบบจะไม่ส่งข้อมูลไปยัง Google Sheet ของอาจารย์ แต่ยังดาวน์โหลดผลคะแนนส่วนตัวได้ตามปกติ)</span>
+    </label>
+
+    <button class="btn-primary" id="btnStart">เริ่มกะทำงาน →</button>
+  </section>
+
+  <!-- ============ SCREEN: STAGE 0 — FOUNDATION ============ -->
+  <section class="panel screen" id="screen-stage0" hidden>
+    <div class="stage-head">
+      <span class="tag">Stage 0 · 15 นาที</span>
+      <h2>รากฐานสิทธิ (Human Rights Foundation)</h2>
+      <p class="lead">จับคู่หลักสิทธิมนุษยชนสากลกับมาตราในรัฐธรรมนูญไทย แล้วเลือกสถานการณ์วิชาชีพสื่อที่สอดคล้องกัน</p>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="stage0Fill"></div></div>
+    <p class="progress-text" id="stage0Progress">ข้อ 1 / 6</p>
+
+    <div class="foundation-card">
+      <div class="foundation-intl" id="foundationIntl"></div>
+      <h4 class="mini-label">ขั้นที่ 1 — มาตราใดในรัฐธรรมนูญไทยสอดคล้องกับข้อความข้างต้น?</h4>
+      <div class="choice-grid" id="foundationArticleChoices"></div>
+      <div id="foundationScenarioBlock" hidden>
+        <h4 class="mini-label">ขั้นที่ 2 — สถานการณ์วิชาชีพสื่อใดสอดคล้องกับสิทธิข้อนี้มากที่สุด?</h4>
+        <div class="choice-grid" id="foundationScenarioChoices"></div>
+      </div>
+      <div class="feedback-card" id="foundationFeedback" hidden></div>
+    </div>
+
+    <div class="three-part-test" id="threePartTest" hidden>
+      <h3>🔺 แบบทดสอบสามชั้น (Three-Part Test) — ICCPR ข้อ 19</h3>
+      <div class="test-steps">
+        <div class="test-step"><strong>1. Provided by Law</strong><span>กำหนดไว้โดยกฎหมายที่ชัดเจน</span></div>
+        <div class="test-step"><strong>2. Legitimate Aim</strong><span>มีวัตถุประสงค์ที่ชอบธรรม</span></div>
+        <div class="test-step"><strong>3. Necessary &amp; Proportionate</strong><span>จำเป็นและได้สัดส่วน</span></div>
+      </div>
+      <p>หลักสามชั้นนี้คือที่มาของ "มาตรวัดเสรีภาพ-ความรับผิดชอบ" ที่คุณจะใช้ตลอดภารกิจถัดไป — ทุกครั้งที่ต้องตัดสินใจ ให้ถามตัวเองสามข้อนี้เสมอ</p>
+      <button class="btn-primary" id="btnStage0Continue">ไปยัง Stage 1 →</button>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN: STAGE 1 — QUIZ ============ -->
+  <section class="panel screen" id="screen-stage1" hidden>
+    <div class="stage-head">
+      <span class="tag">Stage 1 · 10 นาที</span>
+      <h2>ปฐมบท รู้ทันสิทธิ (Rapid Rights Check)</h2>
+      <p class="lead">ตอบคำถามปรนัย 12 ข้อ ให้เร็วและแม่นที่สุด แต่ละข้อมีเวลา 45 วินาที</p>
+    </div>
+    <div class="quiz-topbar">
+      <div class="progress-bar"><div class="progress-fill" id="stage1Fill"></div></div>
+      <div class="timer-ring" id="timerRing"><span id="timerText">45</span></div>
+    </div>
+    <p class="progress-text" id="stage1Progress">ข้อ 1 / 12</p>
+
+    <div class="quiz-card">
+      <p class="quiz-question" id="quizQuestion"></p>
+      <div class="choice-grid" id="quizChoices"></div>
+      <div class="feedback-card" id="quizFeedback" hidden></div>
+    </div>
+    <button class="btn-primary" id="btnQuizNext" hidden>ข้อถัดไป →</button>
+  </section>
+
+  <!-- ============ SCREEN: STAGE 2 — FIELD MISSION ============ -->
+  <section class="panel screen" id="screen-stage2" hidden>
+    <div class="stage-head">
+      <span class="tag">Stage 2 · 25 นาที</span>
+      <h2 id="stage2Title">ภารกิจภาคสนาม (Field Mission)</h2>
+      <p class="lead">วิเคราะห์สถานการณ์จำลองในสายอาชีพของคุณ 4 สถานการณ์ ข้อสุดท้ายเจาะจงเรื่องเสรีภาพสื่อมวลชนของสายคุณโดยตรง</p>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="stage2Fill"></div></div>
+    <p class="progress-text" id="stage2Progress">สถานการณ์ 1 / 4</p>
+
+    <div class="scenario-card">
+      <div class="scenario-code" id="scenarioCode"></div>
+      <h3 class="scenario-title" id="scenarioTitle"></h3>
+      <p class="scenario-articles" id="scenarioArticles"></p>
+      <p class="scenario-text" id="scenarioText"></p>
+
+      <div class="meter-wrap">
+        <div class="meter-label"><span>🕊️ เสรีภาพเต็มที่</span><span>🛡️ คุ้มครองสิทธิผู้อื่นเคร่งครัด</span></div>
+        <div class="meter-track"><div class="meter-fill" id="meterFill"></div><div class="meter-dot" id="meterDot"></div></div>
+      </div>
+
+      <div class="choice-grid vertical" id="scenarioChoices"></div>
+
+      <div id="scenarioReasonBlock" class="reason-block" hidden>
+        <label for="scenarioReason">(ไม่บังคับ แต่ได้ Insight Points เพิ่ม) เพราะเหตุใดคุณจึงเลือกทางนี้?</label>
+        <textarea id="scenarioReason" rows="2" placeholder="อธิบายเหตุผลสั้น ๆ..."></textarea>
+      </div>
+
+      <div class="reveal-card" id="scenarioReveal" hidden>
+        <div class="reveal-block reveal-legal">
+          <h4>⚖️ เหตุผลเชิงกฎหมาย</h4>
+          <p id="scenarioLegal"></p>
+        </div>
+        <div class="reveal-block reveal-real">
+          <h4>🌏 ในโลกจริง</h4>
+          <p id="scenarioRealWorld"></p>
+        </div>
+        <div class="reveal-block reveal-hook">
+          <h4>💭 จุดชวนคิดต่อ</h4>
+          <p id="scenarioHook"></p>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btnScenarioConfirm">ยืนยันการตัดสินใจ</button>
+      <button class="btn-primary" id="btnScenarioNext" hidden>สถานการณ์ถัดไป →</button>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN: STAGE 3 — SORTING CHAMBER ============ -->
+  <section class="panel screen screen-wide" id="screen-stage3" hidden>
+    <div class="stage-head">
+      <span class="tag">Stage 3 · 15 นาที</span>
+      <h2>ห้องแยกแยะ (Sorting Chamber)</h2>
+      <p class="lead">ลากกล่องสถานการณ์ไปวางในหมวดคำตอบที่คุณคิดว่าใช่ ใส่เหตุผลสั้น ๆ แล้วดู "การ์ดหักมุม" ก่อนตัดสินใจสุดท้าย</p>
+    </div>
+    <div class="progress-chip-inline"><span id="sortingCount">0</span> / <span id="sortingTotal">12</span> จัดแล้ว</div>
+
+    <div class="layout sorting-layout">
+      <section class="panel pool-panel">
+        <h3 class="panel-title">📦 สถานการณ์ทั้งหมด</h3>
+        <p class="panel-hint">คลิกค้าง (หรือแตะค้างบนมือถือ) แล้วลากไปวางในกล่องคำตอบด้านขวา — ลากสลับกล่องได้ตลอด</p>
+        <div class="bubble-pool" id="sortingPool"></div>
+      </section>
+
+      <section class="panel boxes-area">
+        <div class="boxes-panel" id="sortingBoxes">
+          <div class="drop-box box-green" data-zone="ok">
+            <div class="box-label">✅ ทำได้</div>
+            <div class="box-content" id="zone-ok" data-placeholder="ยังไม่มีข้อวางไว้"></div>
+          </div>
+          <div class="drop-box box-yellow" data-zone="unsure">
+            <div class="box-label">⚠️ ไม่แน่ใจ / ขอข้อมูลเพิ่ม</div>
+            <div class="box-content" id="zone-unsure" data-placeholder="ยังไม่มีข้อวางไว้"></div>
+          </div>
+          <div class="drop-box box-red" data-zone="forbidden">
+            <div class="box-label">⛔ ทำไม่ได้</div>
+            <div class="box-content" id="zone-forbidden" data-placeholder="ยังไม่มีข้อวางไว้"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="sorting-detail" id="sortingDetail" hidden>
+      <button class="close-x" id="btnCloseSortingDetail">✕</button>
+      <h4 id="sortingDetailTitle"></h4>
+      <p id="sortingDetailText"></p>
+      <label>เหตุผลของคุณ</label>
+      <textarea id="sortingDetailReason" rows="2" placeholder="ทำไมคุณถึงจัดข้อนี้ไว้หมวดนี้..."></textarea>
+      <button class="btn-secondary" id="btnTwist">🔀 ดูมุมมองเพิ่มเติม (การ์ดหักมุม)</button>
+      <div class="twist-card" id="twistCard" hidden></div>
+    </div>
+
+    <button class="btn-primary" id="btnStage3Continue">ไปยัง Stage 4 →</button>
+  </section>
+
+  <!-- ============ SCREEN: STAGE 4 — BOSS ============ -->
+  <section class="panel screen" id="screen-stage4" hidden>
+    <div class="stage-head">
+      <span class="tag">Stage 4 · 10 นาที · ภารกิจบอส</span>
+      <h2>สองสิทธิที่ชนกัน (Colliding Rights)</h2>
+      <p class="lead">สถานการณ์นี้ไม่มีคำตอบสมบูรณ์แบบ — ให้เหตุผลที่ดีที่สุดสำคัญกว่าตำแหน่งบนมาตรวัด</p>
+    </div>
+
+    <div class="scenario-card boss-card">
+      <div class="scenario-code" id="bossCode"></div>
+      <h3 class="scenario-title" id="bossTitle"></h3>
+      <p class="scenario-articles" id="bossArticles"></p>
+      <p class="scenario-text" id="bossText"></p>
+
+      <div class="meter-wrap">
+        <div class="meter-label"><span>🕊️ เสรีภาพเต็มที่</span><span>🛡️ คุ้มครองสิทธิผู้อื่นเคร่งครัด</span></div>
+        <input type="range" id="bossSlider" class="meter-slider" min="0" max="100" value="50" />
+      </div>
+
+      <label for="bossReason">เขียนเหตุผลประกอบการตัดสินใจของคุณ (2-3 ประโยค)</label>
+      <textarea id="bossReason" rows="4" placeholder="ระบุสิทธิที่เกี่ยวข้อง ชั่งน้ำหนักทั้งสองฝ่าย และเชื่อมโยงกับบทบาทวิชาชีพของคุณ..."></textarea>
+
+      <div class="reveal-card" id="bossReveal" hidden>
+        <div class="reveal-block reveal-legal">
+          <h4>⚖️ มุมมองเชิงกฎหมายที่ควรพิจารณา</h4>
+          <p id="bossLegal"></p>
+        </div>
+        <div class="reveal-block reveal-hook">
+          <h4>💭 จุดชวนคิดต่อ</h4>
+          <p id="bossHook"></p>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btnBossSubmit">ส่งคำตัดสิน</button>
+      <button class="btn-primary" id="btnBossContinue" hidden>ไปยัง Stage 5 →</button>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN: STAGE 5 — DEBRIEF ============ -->
+  <section class="panel screen screen-wide" id="screen-stage5" hidden>
+    <div class="stage-head celebrate">
+      <span class="tag">Stage 5 · สรุปภารกิจ</span>
+      <h2>🎉 ผ่านภารกิจสำเร็จ!</h2>
+      <p class="lead" id="debriefName"></p>
+    </div>
+
+    <div class="score-grid">
+      <div class="score-tile"><span id="finalRights">0</span><small>RightsPoints</small></div>
+      <div class="score-tile"><span id="finalInsight">0</span><small>InsightPoints</small></div>
+      <div class="score-tile"><span id="finalTotal">0</span><small>คะแนนรวม</small></div>
+    </div>
+
+    <h3 class="section-label">🏅 แบดจ์ที่ปลดล็อก</h3>
+    <div class="badge-grid" id="badgeGrid"></div>
+
+    <div class="certificate" id="certificate">
+      <div class="cert-inner">
+        <span class="cert-tag">STUDIO 2560 · CA306</span>
+        <h2>ใบอนุญาตนักสื่อสารผู้เท่าทันสิทธิ</h2>
+        <p class="cert-name" id="certName">—</p>
+        <p class="cert-track" id="certTrack">—</p>
+        <p class="cert-score" id="certScore">—</p>
+        <p class="cert-date" id="certDate">—</p>
+      </div>
+    </div>
+    <div class="cert-actions">
+      <button class="btn-primary" id="btnDownloadCert">⬇️ ดาวน์โหลดใบประกาศนียบัตร (JPG)</button>
+      <button class="btn-primary" id="btnDownloadXlsx">⬇️ ดาวน์โหลดผลคะแนนละเอียด (Excel)</button>
+    </div>
+    <p class="hint-text" id="submitStatus" hidden>✅ ส่งผลคะแนนเข้า Google Sheet ของอาจารย์เรียบร้อยแล้ว</p>
+
+    <h3 class="section-label">💭 คำถามชวนถกเถียงท้ายกิจกรรม (สำหรับอาจารย์เปิดฉายในชั้นเรียน)</h3>
+    <ol class="debrief-list" id="debriefList"></ol>
+
+    <button class="btn-secondary" id="btnResetAll">↺ เริ่มกิจกรรมใหม่ทั้งหมด</button>
+  </section>
+
+</main>
+
+<!-- Drag ghost element for Stage 3 -->
+<div class="drag-ghost" id="dragGhost" hidden></div>
+
+<!-- Hidden form for Google Apps Script submission (avoids CORS) -->
+<form id="gsForm" action="" method="POST" target="gsFrame" style="display:none;">
+  <input type="hidden" name="payload" id="gsPayload" />
+</form>
+<iframe name="gsFrame" style="display:none;"></iframe>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
