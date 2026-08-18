@@ -464,27 +464,7 @@ function saveState() {
 const $ = (id) => document.getElementById(id);
 const screens = ["start", "stage0", "stage1", "stage2", "stage3", "stage4"];
 
-// ย้อนกลับ: สแต็กของหน้าจอที่ผ่านมา เก็บไว้เฉพาะในหน่วยความจำ (ไม่บันทึกลง localStorage)
-// เพื่อให้ปุ่ม "← ย้อนกลับ" พาไปยังหน้าก่อนหน้าตามลำดับที่ผู้เล่นเดินทางมาจริง
-const navHistory = [];
-
-function canStepBackWithinStage() {
-  if (state.screen === "stage0") return state.stage0.index > 0;
-  if (state.screen === "stage1") return state.stage1.index > 0;
-  if (state.screen === "stage2") return state.stage2.index > 0;
-  return false;
-}
-
-function updateBackButton() {
-  const btn = $("btnBackHud");
-  if (btn) btn.disabled = navHistory.length === 0 && !canStepBackWithinStage();
-}
-
-function showScreen(name, opts) {
-  opts = opts || {};
-  if (!opts.skipHistory && state.screen && state.screen !== name) {
-    navHistory.push(state.screen);
-  }
+function showScreen(name) {
   state.screen = name;
   screens.forEach((s) => { $("screen-" + s).hidden = s !== name; });
   $("hud").hidden = name === "start";
@@ -493,41 +473,10 @@ function showScreen(name, opts) {
     $("hudStage").textContent = name.replace("stage", "");
   }
   updateHud();
-  updateBackButton();
   updateLibraryBonusNote();
   window.scrollTo({ top: 0, behavior: "smooth" });
   saveState();
 }
-
-// เรียกฟังก์ชัน render ที่ตรงกับหน้าจอนั้น ๆ ใหม่ (ใช้ทั้งตอนย้อนกลับและตอน resume หลังรีเฟรช)
-function renderScreenEntry(name) {
-  if (name === "stage0") { renderFoundation(state.stage0.index || 0); return; }
-  if (name === "stage1") { renderQuiz(state.stage1.index || 0); return; }
-  if (name === "stage2") { renderScenario(state.stage2.index || 0); return; }
-  if (name === "stage3") { renderBoss(); return; }
-  if (name === "stage4") { renderDebrief(); return; }
-}
-
-function goBack() {
-  const withinStage = canStepBackWithinStage();
-  if (!navHistory.length && !withinStage) return;
-
-  if (withinStage) {
-    // ถอยกลับทีละข้อ/ทีละสถานการณ์ภายในด่านเดียวกันก่อน แทนที่จะกระโดดไปด่านก่อนหน้าเลย
-    if (state.screen === "stage0") { renderFoundation(state.stage0.index - 1); }
-    else if (state.screen === "stage1") { renderQuiz(state.stage1.index - 1); }
-    else if (state.screen === "stage2") { renderScenario(state.stage2.index - 1); }
-    updateBackButton();
-    saveState();
-    return;
-  }
-
-  const prev = navHistory.pop();
-  showScreen(prev, { skipHistory: true });
-  renderScreenEntry(prev);
-}
-
-$("btnBackHud").addEventListener("click", goBack);
 
 function updateHud() {
   $("hudRights").textContent = state.rightsPoints;
@@ -753,7 +702,7 @@ function selectFoundationScenario(si) {
   const correct = si === item.correctScenario;
   if (!correct) state.stage0.allCorrectFirstTry = false;
 
-  // ถ้าข้อนี้เคยตอบไปแล้ว (เช่น ผู้เล่นกด "ย้อนกลับ" มาตอบใหม่) ให้ย้อนคะแนนเดิมของข้อนี้ออกก่อน
+  // ถ้าข้อนี้เคยถูกให้คะแนนไปแล้ว (กันกรณีเรียกซ้ำ) ให้ย้อนคะแนนเดิมของข้อนี้ออกก่อน
   if (!state.stage0.scoredItems) state.stage0.scoredItems = {};
   const prevScore = state.stage0.scoredItems[state.stage0.index];
   if (prevScore) state.rightsPoints -= prevScore;
@@ -844,7 +793,7 @@ function lockQuizAnswer(selected) {
   const wrap = $("quizChoices");
   const correct = selected === q.correct;
 
-  // ถ้าข้อนี้เคยตอบไปแล้ว (เช่น ผู้เล่นกด "ย้อนกลับ" มาตอบใหม่) ให้ย้อนคะแนนเดิมออกก่อน
+  // ถ้าข้อนี้เคยถูกให้คะแนนไปแล้ว (กันกรณีเรียกซ้ำ) ให้ย้อนคะแนนเดิมออกก่อน
   // เพื่อไม่ให้ได้แต้ม/คะแนนซ้ำซ้อนจากข้อเดียวกัน
   const prevAnswer = state.stage1.answers[state.stage1.index];
   if (prevAnswer) {
@@ -932,7 +881,7 @@ function renderScenario(index) {
     const opt = s.options[chosen];
     [...wrap.children].forEach((el) => el.disabled = true);
 
-    // ถ้าสถานการณ์นี้เคยตอบไปแล้ว (เช่น ผู้เล่นกด "ย้อนกลับ" มาตอบใหม่) ให้ย้อนคะแนนเดิมออกก่อน
+    // ถ้าสถานการณ์นี้เคยถูกให้คะแนนไปแล้ว (กันกรณีเรียกซ้ำ) ให้ย้อนคะแนนเดิมออกก่อน
     const prevAnswer = state.stage2.answers[index];
     if (prevAnswer) {
       state.rightsPoints -= prevAnswer.best ? 15 : 5;

@@ -438,21 +438,6 @@ input[type="text"]:focus, textarea:focus {
 .reveal-hook { background: rgba(217, 122, 63, 0.1); border-color: rgba(217, 122, 63, 0.32); }
 .reveal-hook h4 { color: var(--magenta); }
 
-.hud-back-btn {
-  font-family: 'Kanit', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--ink);
-  background: rgba(78, 158, 143, 0.12);
-  border: 1px solid rgba(78, 158, 143, 0.4);
-  border-radius: 999px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: box-shadow 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
-}
-.hud-back-btn:hover { box-shadow: 0 4px 14px rgba(78, 158, 143, 0.28); transform: translateY(-1px); }
-.hud-back-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; transform: none; }
-
 /* Knowledge Library (intro screen + persistent modal) */
 .hud-reset-btn {
   font-family: 'Kanit', sans-serif;
