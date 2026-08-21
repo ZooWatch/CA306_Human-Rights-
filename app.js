@@ -1005,51 +1005,6 @@ function renderDebrief() {
   submitToGoogleSheet();
 }
 
-$("btnDownloadCert").addEventListener("click", () => {
-  html2canvas($("certificate"), { backgroundColor: "#060a14", scale: 2 }).then((canvas) => {
-    const link = document.createElement("a");
-    const safe = (s) => (s || "").replace(/[^\p{L}\p{N}_-]+/gu, "");
-    link.download = `${safe(state.studentId)}_${safe(state.firstName)}${safe(state.lastName)}_ใบประกาศนียบัตร.jpg`;
-    link.href = canvas.toDataURL("image/jpeg", 0.95);
-    link.click();
-  });
-});
-
-$("btnDownloadXlsx").addEventListener("click", () => {
-  const wb = XLSX.utils.book_new();
-  const trackLabel = TRACKS.find((t) => t.key === state.track).name;
-
-  const summary = [{
-    "รหัสนักศึกษา": state.studentId, "ชื่อ": state.firstName, "นามสกุล": state.lastName,
-    "สาย": trackLabel, "RightsPoints": state.rightsPoints, "InsightPoints": state.insightPoints,
-    "คะแนนรวม": state.rightsPoints + state.insightPoints,
-    "แบดจ์ที่ได้": state.badges.map((k) => (BADGES.find((b) => b.key === k) || {}).name).join(", "),
-  }];
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(summary), "สรุปคะแนน");
-
-  const s0rows = FOUNDATION_ITEMS.map((item, i) => ({ "ข้อที่": i + 1, "ข้อความสากล": item.intl, "มาตราที่ถูกต้อง": item.articles[item.correctArticle] }));
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s0rows), "Stage0 รากฐานสิทธิ");
-
-  const s1rows = QUIZ_QUESTIONS.map((q, i) => {
-    const a = state.stage1.answers[i] || {};
-    return { "ข้อที่": i + 1, "คำถาม": q.q, "คำตอบที่เลือก": a.selected >= 0 ? q.choices[a.selected] : "ไม่ได้ตอบ/หมดเวลา", "ถูกต้อง": a.correct ? "ใช่" : "ไม่ใช่" };
-  });
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s1rows), "Stage1 Quiz");
-
-  const s2rows = currentScenarios().map((s, i) => {
-    const a = state.stage2.answers[i] || {};
-    return { "รหัสสถานการณ์": s.code, "ชื่อเรื่อง": s.title, "ตัวเลือกที่เลือก": a.chosen >= 0 ? s.options[a.chosen].text : "-", "เป็นทางเลือกที่ดีที่สุด": a.best ? "ใช่" : "ไม่ใช่", "เหตุผลที่ให้": a.reason || "" };
-  });
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s2rows), "Stage2 ภารกิจภาคสนาม");
-
-  const b = BOSS_SCENARIOS[state.track];
-  const s3rows = [{ "สถานการณ์": b.title, "ตำแหน่งมาตรวัด (0=เสรีภาพเต็มที่ 100=คุ้มครองสิทธิผู้อื่น)": state.stage3.sliderValue, "เหตุผลของนักศึกษา": state.stage3.reason }];
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s3rows), "Stage3 ภารกิจบอส");
-
-  const safe = (s) => (s || "").replace(/[^\p{L}\p{N}_-]+/gu, "");
-  XLSX.writeFile(wb, `${safe(state.studentId)}_${safe(state.firstName)}${safe(state.lastName)}_STUDIO2560.xlsx`);
-});
-
 function isGoogleScriptConfigured() {
   return GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== "" && !GOOGLE_SCRIPT_URL.includes("PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE");
 }
